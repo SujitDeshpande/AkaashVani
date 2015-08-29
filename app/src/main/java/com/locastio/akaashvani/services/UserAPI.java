@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -65,15 +66,17 @@ public class UserAPI {
 
     public void getUser(String phone) {
         ParseUser user = ParseUser.getCurrentUser();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
         query.whereEqualTo("username", phone);
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
+//        ParseUser *user = (ParseUser)query.getFirst();
+
+        query.getFirstInBackground(new GetCallback<ParseUser>() {
             @Override
-            public void done(ParseObject parseObject, ParseException e) {
+            public void done(ParseUser parseUser, ParseException e) {
                 if (e == null) {
                     if (callback != null) {
-                        ParseUser user = (ParseUser) parseObject;
-                        callback.didRetriveUser(user);
+                        callback.didRetriveUser(parseUser);
                     }
                 } else {
                     if (callback != null) {
@@ -82,6 +85,12 @@ public class UserAPI {
                 }
             }
         });
+
+//        query.getFirstInBackground(new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject parseObject, ParseException e) {
+//            }
+//        });
 
     }
 
