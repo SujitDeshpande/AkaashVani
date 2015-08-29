@@ -95,6 +95,11 @@ public class RegistrationActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
+    public void didRetriveUser(ParseUser user) {
+
+    }
+
+    @Override
     public void didFailed() {
 
     }
