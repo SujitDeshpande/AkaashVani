@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        this.checkAndStartActivity();
 
-
         NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
         navigationDrawerFragment.setup((DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
