@@ -1,5 +1,6 @@
 package com.locastio.akaashvani;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseUser;
+import com.parse.ui.ParseLoginBuilder;
+
 import tabs.SlidingTabLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mPager;
     private SlidingTabLayout mTabLayout;
     private Toolbar toolbar;
+
+    private static final int LOGIN_REQUEST = 0;
+    private ParseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+//        this.checkAndStartActivity();
+
+
         NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
         navigationDrawerFragment.setup((DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
 
@@ -44,6 +56,44 @@ public class MainActivity extends AppCompatActivity {
         //mTabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         mTabLayout.setViewPager(mPager);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+        Log.d("k10", "Activity Result called");
+        if (requestCode == LOGIN_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Log.d("k10","login success");
+                this.currentUser = ParseUser.getCurrentUser();
+                this.checkAndStartActivity();
+            }
+        }
+    }
+
+    private Boolean checkAndStartActivity() {
+        if (this.currentUser == null) {
+            // User clicked to log in.
+            ParseLoginBuilder loginBuilder = new ParseLoginBuilder(
+                    MainActivity.this);
+            Intent parseLoginIntent = loginBuilder.setParseLoginEnabled(false)
+                    .setFacebookLoginEnabled(true)
+                    .setTwitterLoginEnabled(false)
+                    .build();
+            startActivityForResult(parseLoginIntent, LOGIN_REQUEST);
+            return false;
+//        } else {
+//            if (this.currentUser.isFirstTimeProfileSetupComplete()) {
+//                return true;
+//            } else {
+//                Intent settingActivity = new Intent(this, SettingActivity.class);
+//                startActivity(settingActivity);
+//                return false;
+//            }
+        }
+        return true;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

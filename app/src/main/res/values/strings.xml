@@ -2,6 +2,12 @@
     <string name="app_name">AkaashVani</string>
     <string name="title_activity_main">AkaashVani</string>
 
+    <string name="parse_app_id">cDaiACXWaJtOkXdkUkLPQ8MSZ664oNIUAxe8HKi2</string>
+    <string name="parse_client_key">UDITep9Xx7MYm0fF5ZdKICW8kCTeoiPX900aD3fE</string>
+    <string name="facebook_app_id">476063855909115</string>
+    <string name="twitter_consumer_key">YOUR_TWITTER_CONSUMER_KEY</string>
+    <string name="twitter_consumer_secret">YOUR_TWITTER_CONSUMER_SECRET</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
