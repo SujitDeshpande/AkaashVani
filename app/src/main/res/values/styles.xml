@@ -12,4 +12,8 @@
         <item name="colorControlHighlight">@color/hint_foreground_material_light</item>
     </style>
 
+    <style name="Buttonakash_vani_theme" parent="android:Widget.Holo.Light.Button">
+        <item name="android:background">@drawable/akash_vani_theme_btn_default_holo_light</item>
+    </style>
+
 </resources>

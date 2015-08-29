@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/application_background"
+    tools:context="com.locastio.akaashvani.screen.RegistrationActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Register to AkaashVani"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorPrimary" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="16dp">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/name_register_editText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/akash_vani_theme_edit_text_holo_light"
+                android:hint="Name"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/text_hint_color"
+                android:inputType="text"
+                android:maxLength="50"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/phone_register_editText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/akash_vani_theme_edit_text_holo_light"
+                android:hint="Phone Number"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/text_hint_color"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/password_register_editText3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/akash_vani_theme_edit_text_holo_light"
+                android:hint="Password"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/text_hint_color"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                android:inputType="textPassword"
+                android:maxLength="20"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/confirm_password_register_editText3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                android:background="@drawable/akash_vani_theme_edit_text_holo_light"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/text_hint_color"
+                android:maxLength="20"
+                android:singleLine="true" />
+
+            <Button
+                android:id="@+id/register_button"
+                style="@style/Buttonakash_vani_theme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
