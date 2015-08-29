@@ -9,6 +9,8 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.List;
+
 /**
  * Created by ketan on 29/08/15.
  */
@@ -27,7 +29,7 @@ public class GroupAPI {
 
     }
 
-    public void addGroup(String name) {
+    public Group addGroup(String name) {
 
         final ParseUser user = ParseUser.getCurrentUser();
         if (user == null) {
@@ -41,31 +43,53 @@ public class GroupAPI {
         final Group group = new Group();
         group.setName(name);
         group.setOwner(user);
-        group.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    if (callback != null) {
-                        UserGroup userGroup = new UserGroup();
-                        userGroup.setUser(user);
-                        userGroup.setGroup(group);
-                        try {
-                            userGroup.save();
-                        } catch (ParseException e1) {
-                            e1.printStackTrace();
-                        }
-                        callback.didAddGroup(group);
-                    }
-                } else {
-                    if (callback != null) {
-                        callback.didFailed();
-                    }
-                }
-            }
-        });
+        try {
+            group.save();
+            return group;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+//        group.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(ParseException e) {
+//                if (e == null) {
+//                    if (callback != null) {
+//                        UserGroup userGroup = new UserGroup();
+//                        userGroup.setUser(user);
+//                        userGroup.setGroup(group);
+//                        try {
+//                            userGroup.save();
+//                        } catch (ParseException e1) {
+//                            e1.printStackTrace();
+//                        }
+//                        callback.didAddGroup(group);
+//                    }
+//                } else {
+//                    if (callback != null) {
+//                        callback.didFailed();
+//                    }
+//                }
+//            }
+//        });
 
 
 
+    }
+
+    public boolean addGroup(String groupName, List<ParseUser> userList) {
+        Group group = this.addGroup(groupName);
+        if (group == null) {
+            return false;
+        }
+        for (ParseUser user: userList) {
+            UserGroup userGroup = new UserGroup();
+            userGroup.setUser(user);
+            userGroup.setGroup(group);
+            userGroup.saveInBackground();
+        }
+        return true;
     }
 
 
