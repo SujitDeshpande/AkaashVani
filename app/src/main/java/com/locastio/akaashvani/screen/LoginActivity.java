@@ -55,6 +55,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 if (AkashVaniUtility.checkNetworkConnection(LoginActivity.this)) {
 
                     if (localValidation()) {
+
+                        showProgressDialog(LoginActivity.this, "Login in ...");
                         UserAPI userAPI = new UserAPI(this);
                         userAPI.login(mPhoneEditText.getText().toString(), mPasswordEditText.getText().toString());
                     }

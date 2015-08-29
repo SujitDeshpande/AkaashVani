@@ -7,7 +7,6 @@ import com.locastio.akaashvani.data.UserGroup;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -17,9 +16,8 @@ import java.util.List;
 public class GroupAPI {
     // The callback interface
     public interface Callback {
-        public void didAddGroup(Group group);
-        public void didDeleteGroup();
-        public void didFailed();
+        public void didDeleteGroup(String s);
+        public void didGroupFailed(String s);
     }
     Callback callback;
 
@@ -29,7 +27,7 @@ public class GroupAPI {
 
     }
 
-    public Group addGroup(String name) {
+    private Group addGroup(String name) {
 
         final ParseUser user = ParseUser.getCurrentUser();
         if (user == null) {
@@ -51,34 +49,10 @@ public class GroupAPI {
         }
 
         return null;
-//        group.saveInBackground(new SaveCallback() {
-//            @Override
-//            public void done(ParseException e) {
-//                if (e == null) {
-//                    if (callback != null) {
-//                        UserGroup userGroup = new UserGroup();
-//                        userGroup.setUser(user);
-//                        userGroup.setGroup(group);
-//                        try {
-//                            userGroup.save();
-//                        } catch (ParseException e1) {
-//                            e1.printStackTrace();
-//                        }
-//                        callback.didAddGroup(group);
-//                    }
-//                } else {
-//                    if (callback != null) {
-//                        callback.didFailed();
-//                    }
-//                }
-//            }
-//        });
-
-
 
     }
 
-    public boolean addGroup(String groupName, List<ParseUser> userList) {
+    public boolean createGroup(String groupName, List<ParseUser> userList) {
         Group group = this.addGroup(groupName);
         if (group == null) {
             return false;
@@ -99,11 +73,11 @@ public class GroupAPI {
             public void done(ParseException e) {
                 if (e == null) {
                     if (callback != null) {
-                        callback.didDeleteGroup();
+                        callback.didDeleteGroup("Group deleted successfully.");
                     }
                 } else {
                     if (callback != null) {
-                        callback.didFailed();
+                        callback.didGroupFailed("Group creation failed.");
                     }
                 }
             }

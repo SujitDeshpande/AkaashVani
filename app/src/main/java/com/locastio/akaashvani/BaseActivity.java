@@ -1,5 +1,7 @@
 package com.locastio.akaashvani;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import android.view.MenuItem;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private ProgressDialog progressDialog = null;
+    private String progressMessage = null;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -87,6 +91,44 @@ public abstract class BaseActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setProgressMsg(String msg) {
+
+        progressDialog.setTitle(msg);
+
+    }
+
+    public void showProgressDialog(Context context, String message) {
+
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.cancel();
+
+        progressDialog = null;
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle(message);
+        progressDialog.setMessage("Please wait...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        /*
+         * if (progressDialog != null && progressDialog.isShowing()) progressDialog.cancel();
+		 *
+		 * progressMessage = message;
+		 *
+		 * progressDialog = null; progressDialog = ProgressDialog.show(BaseFragmentActivity.this, null, null);
+		 * progressDialog.setContentView(R.layout.progressbar_activity); ((TextView) progressDialog.findViewById(R.id.textmsg)).setText(message);
+		 * progressDialog.setMessage("Please wait..."); progressDialog.setCancelable(false);
+		 *
+		 * progressDialog.show();
+		 */
+    }
+
+    public void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.cancel();
+            progressDialog = null;
+        }
     }
 
 }

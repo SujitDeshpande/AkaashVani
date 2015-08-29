@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.locastio.akaashvani.BaseActivity;
 import com.locastio.akaashvani.R;
 import com.locastio.akaashvani.adapter.ContactsRecycleViewAdapter;
+import com.locastio.akaashvani.services.GroupAPI;
 import com.locastio.akaashvani.services.UserAPI;
 import com.locastio.akaashvani.util.AkashVaniUtility;
 import com.parse.ParseUser;
@@ -23,17 +24,17 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateGroupActivity extends BaseActivity implements View.OnClickListener, UserAPI.Callback {
+public class CreateGroupActivity extends BaseActivity implements View.OnClickListener, UserAPI.Callback, GroupAPI.Callback {
 
     private RecyclerView mContactRecyclerView;
     private ContactsRecycleViewAdapter mContactsAdapter;
     private String phoneNumber = "";
-    private List<String> mContactsList = new ArrayList<String>();
+    private List<ParseUser> mContactsList = new ArrayList<ParseUser>();
     private EditText mPhoneNumberEditText;
     private Button mFindButton;
     private EditText mGroupNameEditText;
     private Button mCreateButton;
-    private List<String> mTempContactsList = new ArrayList<String>();
+    private List<ParseUser> mTempUserList = new ArrayList<ParseUser>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
             // get phone number
             System.out.println(".................." + phoneNumber);
 
-            mContactsList.add(phoneNumber);
+//            mContactsList.add(phoneNumber);
         }
     }
 
@@ -109,6 +110,17 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
                     Toast.makeText(CreateGroupActivity.this, "Please check your network connection.", Toast.LENGTH_SHORT).show();
                 }
                 break;
+
+            case R.id.create_button:
+
+                if (AkashVaniUtility.checkNetworkConnection(CreateGroupActivity.this)) {
+                    GroupAPI groupAPI = new GroupAPI(this);
+                    groupAPI.createGroup(mGroupNameEditText.getText().toString(),mTempUserList) ;
+                } else {
+                    Toast.makeText(CreateGroupActivity.this, "Please check your network connection.", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
         }
     }
 
@@ -149,9 +161,9 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
         if (user != null) {
             mCreateButton.setEnabled(true);
 
-            mTempContactsList.add(mPhoneNumberEditText.getText().toString());
+            mTempUserList.add(user);
 
-            mContactsAdapter.addNewContactNumber(mPhoneNumberEditText.getText().toString());
+            mContactsAdapter.addNewContactNumber(user);
 
             mPhoneNumberEditText.setText("");
 
@@ -164,27 +176,21 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
 
     }
 
+
     @Override
-    public void didFailed(String str) {
-        Toast.makeText(CreateGroupActivity.this, str, Toast.LENGTH_SHORT).show(); // user not found
+    public void didDeleteGroup(String s) {
+
     }
 
+    @Override
+    public void didGroupFailed(String str) {
 
-/**
- * @return
- */
-//    private List<String> getGroupData(ContentResolver cr) {
-//        List<String> data = new ArrayList<>();
-//        Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
-//        // use the cursor to access the contacts
-//        while (phones.moveToNext()) {
-//            String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-//            // get display name
-//            phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-//            // get phone number
-//            System.out.println(".................." + phoneNumber);
-//        }
-//        return data;
-//    }
+    }
+
+    @Override
+    public void didFailed(String str) {
+        mPhoneNumberEditText.setText("");
+        Toast.makeText(CreateGroupActivity.this, str, Toast.LENGTH_SHORT).show(); // user not found
+    }
 
 }
