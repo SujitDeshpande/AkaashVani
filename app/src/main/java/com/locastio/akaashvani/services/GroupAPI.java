@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.locastio.akaashvani.data.Group;
 import com.locastio.akaashvani.data.UserGroup;
+import com.parse.DeleteCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -15,6 +16,7 @@ public class GroupAPI {
     // The callback interface
     public interface Callback {
         public void didAddGroup(Group group);
+        public void didDeleteGroup();
         public void didFailed();
     }
     Callback callback;
@@ -67,5 +69,21 @@ public class GroupAPI {
     }
 
 
+    public void deleteGroup(Group group) {
+        group.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    if (callback != null) {
+                        callback.didDeleteGroup();
+                    }
+                } else {
+                    if (callback != null) {
+                        callback.didFailed();
+                    }
+                }
+            }
+        });
+    }
 
 }

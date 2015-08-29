@@ -30,16 +30,16 @@ public class LocationAPI {
     Callback callback;
 
 
-    public void updateLocationOfUser(ParseUser user, Location location) {
+    public void updateLocationOfUser(ParseUser parseUser, Location location) {
 //        UserLocation userLocation = new UserLocation("objId", location);
 
-        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
+        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+parseUser.getObjectId());
         mUserFirebaseRefLocation.push().setValue(location);
 
     }
 
-    public void trackUserLocation(ParseUser user) {
-        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
+    public void trackUserLocation(ParseUser parseUser) {
+        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+parseUser.getObjectId());
         mUserFirebaseRefLocation.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -52,8 +52,8 @@ public class LocationAPI {
             }
         });
     }
-    public void removeTrackingForUser(ParseUser user) {
-        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
+    public void removeTrackingForUser(ParseUser parseUser) {
+        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+parseUser.getObjectId());
 //        mUserFirebaseRefLocation.removeEventListener();
 
     }

@@ -105,6 +105,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     @Override
+    public void didRetriveUser(ParseUser user) {
+
+    }
+
+    @Override
     public void didFailed() {
         Toast.makeText(LoginActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
     }
