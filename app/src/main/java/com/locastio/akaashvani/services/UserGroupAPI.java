@@ -1,10 +1,8 @@
 package com.locastio.akaashvani.services;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.locastio.akaashvani.data.Group;
-import com.locastio.akaashvani.data.User;
 import com.locastio.akaashvani.data.UserGroup;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -33,7 +31,7 @@ public class UserGroupAPI {
 
     }
 
-    public void addUserGroup(User user, Group group) {
+    public void addUserGroup(ParseUser user, Group group) {
 
         final UserGroup userGroup = new UserGroup();
         userGroup.setUser(user);
@@ -58,9 +56,8 @@ public class UserGroupAPI {
     }
 
     public void getMyGroups() {
-        User user = (User)ParseUser.getCurrentUser();
+        ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserGroup");
-
 
         query.whereEqualTo("user", user);
         query.findInBackground(new FindCallback<ParseObject>() {

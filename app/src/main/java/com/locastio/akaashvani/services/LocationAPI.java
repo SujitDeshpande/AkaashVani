@@ -1,7 +1,6 @@
 package com.locastio.akaashvani.services;
 
 import android.location.Location;
-import android.support.annotation.NonNull;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -10,12 +9,6 @@ import com.firebase.client.ValueEventListener;
 import com.locastio.akaashvani.data.User;
 import com.locastio.akaashvani.data.UserLocation;
 import com.parse.ParseUser;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by ketan on 29/08/15.
@@ -40,9 +33,30 @@ public class LocationAPI {
 
 
     public void updateLocationOfUser(User user, Location location) {
+//        UserLocation userLocation = new UserLocation("objId", location);
+
         Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
         mUserFirebaseRefLocation.push().setValue(location);
+
     }
 
+    public void trackUserLocation(User user) {
+        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
+        mUserFirebaseRefLocation.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+    public void removeTrackingForUser(User user) {
+        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
+//        mUserFirebaseRefLocation.removeEventListener();
+
+    }
 }
