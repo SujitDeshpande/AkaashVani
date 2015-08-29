@@ -33,4 +33,11 @@ public class User extends ParseUser {
         put("password", value);
     }
 
+    // fullName
+    public String getFullname() {
+        return getString("fullname");
+    }
+    public void setFullname(String value) {
+        put("fullname", value);
+    }
 }

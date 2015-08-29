@@ -31,7 +31,6 @@ public class GroupAPI {
     public void addGroup(String name) {
 
         final User user = (User)ParseUser.getCurrentUser();
-
         if (user == null) {
             throw new RuntimeException("User needs to be signed up first.");
 //            return;
@@ -69,4 +68,7 @@ public class GroupAPI {
 
 
     }
+
+
+
 }

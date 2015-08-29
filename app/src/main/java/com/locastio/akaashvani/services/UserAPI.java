@@ -27,10 +27,11 @@ public class UserAPI {
 
     }
 
-    public void registerUser(String phone, String password) {
+    public void registerUser(String phone, String password, String fullName) {
         User user = new User();
         user.setUsername(phone);//"my name");
         user.setPassword(password);//"my pass");
+        user.setFullname(fullName);
 //        user.setEmail(email);//"email@example.com");
 
 // other fields can be set just like with ParseObject
