@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -16,6 +17,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.locastio.akaashvani.data.Group;
+import com.locastio.akaashvani.data.UserGroup;
+import com.locastio.akaashvani.services.LocationAPI;
+import com.locastio.akaashvani.services.LocationTrackerAPI;
+import com.locastio.akaashvani.services.UserGroupAPI;
+import com.locastio.akaashvani.util.GPSTracker;
+import com.parse.Parse;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -25,7 +35,7 @@ import java.util.List;
 public class MapActivity extends BaseActivity
         implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, LocationAPI.Callback, GPSTracker.Callback, UserGroupAPI.Callback, LocationTrackerAPI.Callback {
 
     private static final String TAG = "LocationActivity";
     private static final long INTERVAL = 1000 * 60 * 1; //1 minute
@@ -42,6 +52,8 @@ public class MapActivity extends BaseActivity
     List<Markers> markers = new ArrayList<Markers>();
 
 
+    GPSTracker gpsTracker;
+
     // flag for GPS status
     boolean isGPSEnabled = false;
 
@@ -56,15 +68,26 @@ public class MapActivity extends BaseActivity
     double longitude; // longitude
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 10 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 5 * 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000; //1000 * 5 * 1; // 1 minute
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        String strGroupObjId = getIntent().getStringExtra("groupObjId");
+
+        UserGroupAPI userGroupAPI = new UserGroupAPI(this);
+        userGroupAPI.getUserGroupsOfGroupId(strGroupObjId);
+        Log.d("k10:", strGroupObjId);
+
+
+        gpsTracker = new GPSTracker(this, this);
+//        gpsTracker.getLocation();
+
         markers = getData();
         //setContentView(R.layout.activity_maps);
         Log.d(TAG, "onCreate ...............................");
@@ -81,6 +104,9 @@ public class MapActivity extends BaseActivity
 
 
         setContentView(R.layout.activity_map);
+
+
+        getLocation();
  /*       MapFragment fm;
         fm = MapFragment.newInstance();
         FragmentTransaction fragmentTransaction =
@@ -329,10 +355,117 @@ public class MapActivity extends BaseActivity
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         addMarker();
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        LocationAPI locationAPI = new LocationAPI(this);
+        locationAPI.updateLocationOfUser(currentUser, location);
+
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.d(TAG, "Connection failed: " + connectionResult.toString());
+    }
+
+
+    @Override
+    public void didUpdateLocation(Location location) {
+        LocationAPI locationAPI = new LocationAPI(null);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        locationAPI.updateLocationOfUser(currentUser, location);
+    }
+
+    @Override
+    public void didDataChanged(DataSnapshot dataSnapshot) {
+        System.out.println("There are " + dataSnapshot.getChildrenCount() + " blog posts");
+        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+            Location location = postSnapshot.getValue(Location.class);
+            System.out.println(location.getLatitude() + " - " + location.getLongitude());
+        }
+    }
+
+    @Override
+    public void didCancelled() {
+
+    }
+
+    //UserGroupAPI.Callback methods
+    @Override
+    public void didRetrievedMyGroups(List<ParseObject> groupList) {
+
+    }
+    @Override
+    public void didRetrievedUserGroups(List<ParseObject> userGroupObjList, Group group) {
+
+        this.trackLocationOfGroup(userGroupObjList);
+
+    }
+    @Override
+    public void didRetrieveGrpFailed(String s) {
+
+    }
+    @Override
+    public void didRetrieveUserGroupFailed(String s) {
+
+    }
+
+    List<LocationTrackerAPI> locationTrackerAPIList = new ArrayList<LocationTrackerAPI>();
+    // Location Tracking methods
+    void trackLocationOfGroup(List<ParseObject> userGroupList) {
+        for (ParseObject parseObject: userGroupList) {
+            UserGroup userGroup = (UserGroup) parseObject;
+            LocationTrackerAPI locationTrackerAPI = new LocationTrackerAPI(this);
+            locationTrackerAPI.trackUserLocation(userGroup.getUser());
+            locationTrackerAPIList.add(locationTrackerAPI);
+        }
+    }
+
+    void stopTrackingGroup() {
+        for (LocationTrackerAPI locationTrackerAPI: locationTrackerAPIList) {
+            locationTrackerAPI.removeTrackingForUser();
+            locationTrackerAPIList.add(locationTrackerAPI);
+        }
+    }
+
+    //LocationTrackerAPI.Callback methods
+    @Override
+    public void didDataChanged(DataSnapshot dataSnapshot, ParseUser parseUser) {
+        System.out.println("There are " + dataSnapshot.getChildrenCount() + " blog posts");
+
+        double latitude = 0;
+        if (dataSnapshot.hasChild("latitude") ) {
+            latitude = (double)dataSnapshot.child("latitude").getValue();
+            System.out.println(latitude);
+//            Toast.makeText(this, "User " + parseUser.get("fullname") + location.getLongitude() + ":" + location.getLongitude(), Toast.LENGTH_SHORT).show();
+        }
+        double longitude = 0;
+        if (dataSnapshot.hasChild("longitude") ) {
+            longitude = (double)dataSnapshot.child("longitude").getValue();
+            System.out.println(longitude);
+        }
+
+        if (latitude !=0 && longitude != 0) {
+            Toast.makeText(this, "User " + parseUser.get("fullname") + ":" + latitude + ":" + longitude, Toast.LENGTH_SHORT).show();
+        }
+
+//        for (DataSnapshot locationSnapshot: dataSnapshot.getChildren()) {
+//            System.out.println(locationSnapshot);
+//
+//            if (locationSnapshot.hasChild("latitude") ) {
+//                double latitude = (double)locationSnapshot.child("latitude").getValue();
+//            }
+//            if (locationSnapshot.hasChild("longitude") ) {
+//                double longitude = (double)locationSnapshot.child("longitude").getValue();
+//            }
+////            Location location = locationSnapshot.getValue(Location.class);
+//
+////            Toast.makeText(this, "User " + parseUser.get("fullname") + location.getLongitude() + ":" + location.getLongitude(), Toast.LENGTH_SHORT).show();
+////            System.out.println(post.getAuthor() + " - " + post.getTitle());
+//        }
+    }
+
+    @Override
+    public void didCancelledLocationTrackingOfUser(ParseUser parseUser) {
+
     }
 }

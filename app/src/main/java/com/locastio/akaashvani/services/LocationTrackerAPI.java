@@ -9,50 +9,41 @@ import com.firebase.client.ValueEventListener;
 import com.parse.ParseUser;
 
 /**
- * Created by ketan on 29/08/15.
+ * Created by ketan on 30/08/15.
  */
-public class LocationAPI {
-
+public class LocationTrackerAPI {
     private Firebase mFirebaseRefLocation;
     private static final String FIREBASE_URL = "https://akaashvani.firebaseio.com/";
 
-    public LocationAPI(Callback callback) {
+    public LocationTrackerAPI(Callback callback) {
         this.callback = callback;
         mFirebaseRefLocation = new Firebase(FIREBASE_URL).child("location");
     }
 
     // The callback interface
     public interface Callback {
-        void didDataChanged(DataSnapshot dataSnapshot);
-        void didCancelled();
+        void didDataChanged(DataSnapshot dataSnapshot, ParseUser parseUser);
+        void didCancelledLocationTrackingOfUser(ParseUser parseUser);
     }
     Callback callback;
 
-
-    public void updateLocationOfUser(ParseUser parseUser, Location location) {
-//        UserLocation userLocation = new UserLocation("objId", location);
-
-        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+parseUser.getObjectId());
-        mUserFirebaseRefLocation.setValue(location);
-//        mUserFirebaseRefLocation.push().setValue(location);
-
-    }
-
-    public void trackUserLocation(ParseUser parseUser) {
+    ParseUser parseUser;
+    public void trackUserLocation(final ParseUser parseUser_) {
+        this.parseUser = parseUser_;
         Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+parseUser.getObjectId());
         mUserFirebaseRefLocation.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                callback.didDataChanged(dataSnapshot, parseUser);
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
+                callback.didCancelledLocationTrackingOfUser(parseUser);
             }
         });
     }
-    public void removeTrackingForUser(ParseUser parseUser) {
+    public void removeTrackingForUser() {
         Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+parseUser.getObjectId());
 //        mUserFirebaseRefLocation.removeEventListener();
 

@@ -33,7 +33,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
 
     @Override
     public void onBindViewHolder(GroupNameViewHolder holder, int position) {
-        Group currentGrp = data.get(position);
+        final Group currentGrp = data.get(position);
 
         if (!TextUtils.isEmpty(currentGrp.getName())) {
             holder.mGrpNameTextView.setText(currentGrp.getName());
@@ -43,6 +43,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MapActivity.class);
+                intent.putExtra("groupObjId", currentGrp.getObjectId());
                 mContext.startActivity(intent);
             }
         });

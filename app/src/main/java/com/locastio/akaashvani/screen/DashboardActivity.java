@@ -113,4 +113,14 @@ public class DashboardActivity extends BaseActivity implements UserGroupAPI.Call
         dismissProgressDialog();
         Toast.makeText(DashboardActivity.this, s, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void didRetrievedUserGroups(List<ParseObject> userGroupObjList, Group group) {
+
+    }
+
+    @Override
+    public void didRetrieveUserGroupFailed(String s) {
+
+    }
 }
