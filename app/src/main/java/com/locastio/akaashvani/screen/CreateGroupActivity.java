@@ -16,12 +16,14 @@ import android.widget.Toast;
 import com.locastio.akaashvani.BaseActivity;
 import com.locastio.akaashvani.R;
 import com.locastio.akaashvani.adapter.ContactsRecycleViewAdapter;
+import com.locastio.akaashvani.services.UserAPI;
 import com.locastio.akaashvani.util.AkashVaniUtility;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateGroupActivity extends BaseActivity implements View.OnClickListener {
+public class CreateGroupActivity extends BaseActivity implements View.OnClickListener, UserAPI.Callback {
 
     private RecyclerView mContactRecyclerView;
     private ContactsRecycleViewAdapter mContactsAdapter;
@@ -92,30 +94,16 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
 
                 if (AkashVaniUtility.checkNetworkConnection(CreateGroupActivity.this)) {
                     if (localValidation()) {
+                        UserAPI userAPI = new UserAPI(this);
+                        userAPI.getUser(mPhoneNumberEditText.getText().toString());
+
 //                        for (int i = 0; i < mContactsList.size(); i++) {
 //                            if (mContactsList.get(i).equals(mPhoneNumberEditText.getText().toString())) {
 //
 //                            }
 //                        }
 
-                        mCreateButton.setEnabled(true);
 
-                        mTempContactsList.add(mPhoneNumberEditText.getText().toString());
-
-                        mContactsAdapter.addNewContactNumber(mPhoneNumberEditText.getText().toString());
-
-                        mPhoneNumberEditText.setText("");
-//                        for (int i = 0; i < mTempContactsList.size(); i++) {
-//
-//                            if (mTempContactsList.get(i).equalsIgnoreCase(mPhoneNumberEditText.getText().toString())) {
-//                                Toast.makeText(CreateGroupActivity.this, "This number is already added.", Toast.LENGTH_SHORT).show();
-//                            } else {
-//
-//                                mContactsAdapter.addNewContactNumber(mPhoneNumberEditText.getText().toString());
-//                            }
-//                        }
-
-                        System.out.println("Size :" + mContactsList.size());
                     }
                 } else {
                     Toast.makeText(CreateGroupActivity.this, "Please check your network connection.", Toast.LENGTH_SHORT).show();
@@ -144,6 +132,41 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void didRegister(ParseUser user) {
+
+    }
+
+    @Override
+    public void didLogin(ParseUser user) {
+
+    }
+
+    @Override
+    public void didRetriveUser(ParseUser user) {
+        if (user != null) {
+            mCreateButton.setEnabled(true);
+
+            mTempContactsList.add(mPhoneNumberEditText.getText().toString());
+
+            mContactsAdapter.addNewContactNumber(mPhoneNumberEditText.getText().toString());
+
+            mPhoneNumberEditText.setText("");
+
+            System.out.println("Size :" + mContactsList.size());
+        }
+    }
+
+    @Override
+    public void didFailed() {
+
+    }
+
+    @Override
+    public void didFailed(String str) {
+        Toast.makeText(CreateGroupActivity.this, str, Toast.LENGTH_SHORT).show(); // user not found
     }
 
 

@@ -2,7 +2,6 @@ package com.locastio.akaashvani.services;
 
 import android.util.Log;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -10,8 +9,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-
-import java.util.List;
 
 /**
  * Created by ketan on 29/08/15.
@@ -25,6 +22,7 @@ public class UserAPI {
         void didLogin(ParseUser user);
         void didRetriveUser(ParseUser user);
         void didFailed();
+        void didFailed(String str);
     }
 
     Callback callback;
@@ -68,18 +66,18 @@ public class UserAPI {
     public void getUser(String phone) {
         ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-        query.whereEqualTo("phone", phone);
+        query.whereEqualTo("username", phone);
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
                 if (e == null) {
                     if (callback != null) {
-                        ParseUser user = (ParseUser)parseObject;
-                        callback.didRegister(user);
+                        ParseUser user = (ParseUser) parseObject;
+                        callback.didRetriveUser(user);
                     }
                 } else {
                     if (callback != null) {
-                        callback.didFailed();
+                        callback.didFailed("User not found.");
                     }
                 }
             }

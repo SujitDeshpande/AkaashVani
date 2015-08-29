@@ -109,4 +109,9 @@ public class RegistrationActivity extends BaseActivity implements View.OnClickLi
     public void didFailed() {
 
     }
+
+    @Override
+    public void didFailed(String str) {
+
+    }
 }
