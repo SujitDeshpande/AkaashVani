@@ -2,7 +2,6 @@ package com.locastio.akaashvani.services;
 
 import android.util.Log;
 
-import com.locastio.akaashvani.data.User;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -15,10 +14,13 @@ public class UserAPI {
 
     // The callback interface
     public interface Callback {
-        void didRegister();
+        void didRegister(ParseUser user);
+
         void didLogin(ParseUser user);
+
         void didFailed();
     }
+
     Callback callback;
 
     public UserAPI(Callback callback) {
@@ -28,10 +30,10 @@ public class UserAPI {
     }
 
     public void registerUser(String phone, String password, String fullName) {
-        User user = new User();
+        final ParseUser user = new ParseUser();
         user.setUsername(phone);//"my name");
         user.setPassword(password);//"my pass");
-        user.setFullname(fullName);
+        user.put("fullname", fullName);
 //        user.setEmail(email);//"email@example.com");
 
 // other fields can be set just like with ParseObject
@@ -43,12 +45,12 @@ public class UserAPI {
                     // Hooray! Let them use the app now.
                     Log.d("k10", "registration success");
                     if (callback != null) {
-                        callback.didRegister();
+                        callback.didRegister(user);
                     }
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
-                    Log.d("k10","registration failed");
+                    Log.d("k10", "registration failed");
                     if (callback != null) {
                         callback.didFailed();
                     }
@@ -58,9 +60,9 @@ public class UserAPI {
     }
 
     public void login(String phone, String password) {
-        User.logInInBackground(phone, password, new LogInCallback() {
+        ParseUser.logInInBackground(phone, password, new LogInCallback() {
             public void done(ParseUser parseUser, ParseException e) {
-                User user = (User)parseUser;
+                ParseUser user = parseUser;
                 if (user != null) {
                     // Hooray! The user is logged in.
                     if (callback != null) {

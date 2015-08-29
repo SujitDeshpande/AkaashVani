@@ -4,11 +4,11 @@ import android.app.Application;
 
 import com.firebase.client.Firebase;
 import com.locastio.akaashvani.data.Group;
-import com.locastio.akaashvani.data.User;
 import com.locastio.akaashvani.data.UserGroup;
 import com.locastio.akaashvani.preference.PreferenceUtil;
 import com.parse.Parse;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 /**
  * Created by ketan on 29/08/15.
@@ -35,7 +35,7 @@ public class AkaashvaniApplication extends Application {
 
         Firebase.setAndroidContext(this);
 
-        ParseObject.registerSubclass(User.class);
+        ParseObject.registerSubclass(ParseUser.class);
         ParseObject.registerSubclass(Group.class);
         ParseObject.registerSubclass(UserGroup.class);
 

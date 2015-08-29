@@ -17,4 +17,6 @@
     <string name="drawer_close">Close</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_registration">RegistrationActivity</string>
+    <string name="something_went_wrong">Something went wrong, Please try again later.</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
 </resources>

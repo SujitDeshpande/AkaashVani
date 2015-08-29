@@ -10,8 +10,10 @@ import android.widget.Toast;
 
 import com.locastio.akaashvani.BaseActivity;
 import com.locastio.akaashvani.R;
+import com.locastio.akaashvani.services.UserAPI;
+import com.parse.ParseUser;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener, UserAPI.Callback {
 
     // phone eduit text
     private EditText mPhoneEditText;
@@ -50,6 +52,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.login_button:
 
                 if (localValidation()) {
+                    UserAPI userAPI = new UserAPI(this);
+                    userAPI.login(mPhoneEditText.getText().toString(), mPasswordEditText.getText().toString());
                 }
 
                 break;
@@ -78,4 +82,24 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    @Override
+    public void didRegister(ParseUser user) {
+
+    }
+
+    @Override
+    public void didLogin(ParseUser user) {
+
+        if (user != null) {
+
+            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    public void didFailed() {
+        Toast.makeText(LoginActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+    }
 }

@@ -5,5 +5,5 @@ package com.locastio.akaashvani;
  */
 public class Information {
     int iconID;
-    String title;
+    public String title;
 }

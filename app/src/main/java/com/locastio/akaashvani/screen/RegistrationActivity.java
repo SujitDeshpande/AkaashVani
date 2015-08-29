@@ -1,14 +1,19 @@
 package com.locastio.akaashvani.screen;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.locastio.akaashvani.BaseActivity;
 import com.locastio.akaashvani.R;
+import com.locastio.akaashvani.services.UserAPI;
+import com.parse.ParseUser;
 
-public class RegistrationActivity extends BaseActivity implements View.OnClickListener {
+public class RegistrationActivity extends BaseActivity implements View.OnClickListener, UserAPI.Callback {
 
     // name edit text
     private EditText mNameEdittext;
@@ -38,16 +43,59 @@ public class RegistrationActivity extends BaseActivity implements View.OnClickLi
         mPasswordEdittext = (EditText) findViewById(R.id.password_register_editText3);
         mConfirmPasswordEdittext = (EditText) findViewById(R.id.confirm_password_register_editText3);
 
-        mRegisterBtn = (Button)findViewById(R.id.register_button);
+        mRegisterBtn = (Button) findViewById(R.id.register_button);
         mRegisterBtn.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.register_button:
+                if (localValidation()) {
+                    UserAPI userAPI = new UserAPI(this);
+                    userAPI.registerUser(mPhoneNumber.getText().toString(), mPasswordEdittext.getText().toString(), mNameEdittext.getText().toString());
+                }
                 break;
         }
+    }
+
+    /**
+     * filed ui local validation
+     *
+     * @return
+     */
+    private boolean localValidation() {
+        if (!TextUtils.isEmpty(mNameEdittext.getText().toString())
+                && (!TextUtils.isEmpty(mPhoneNumber.getText().toString()))
+                && (mConfirmPasswordEdittext.getText().toString().equals(mPasswordEdittext.getText().toString()))
+                && (!TextUtils.isEmpty(mConfirmPasswordEdittext.getText().toString()))
+                && (!TextUtils.isEmpty(mPasswordEdittext.getText().toString()))) {
+
+            return true;
+        } else {
+            Toast.makeText(RegistrationActivity.this, "Please fill mandatory fields.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    @Override
+    public void didRegister(ParseUser user) {
+        if (user != null) {
+            Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+//            PreferenceUtil.getInstance().setStringValue("USER_");
+        }
+    }
+
+    @Override
+    public void didLogin(ParseUser user) {
+
+    }
+
+    @Override
+    public void didFailed() {
+
     }
 }

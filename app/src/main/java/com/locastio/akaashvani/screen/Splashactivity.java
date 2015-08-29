@@ -3,13 +3,10 @@ package com.locastio.akaashvani.screen;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 
 import com.locastio.akaashvani.BaseActivity;
-import com.locastio.akaashvani.MainActivity;
 import com.locastio.akaashvani.R;
-import com.locastio.akaashvani.preference.PreferenceKey;
-import com.locastio.akaashvani.preference.PreferenceUtil;
+import com.parse.ParseUser;
 
 public class Splashactivity extends BaseActivity {
 
@@ -23,15 +20,25 @@ public class Splashactivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                String authToken = PreferenceUtil.getInstance().getStringValue(PreferenceKey.KEY_AUTH_TOKEN, "");
-                Intent intent = null;
-                if (!TextUtils.isEmpty(authToken)) {
-                    intent = new Intent(Splashactivity.this, MainActivity.class);
 
+                Intent intent = null;
+                ParseUser user = ParseUser.getCurrentUser();
+
+                if (user != null) {
+                    intent = new Intent(Splashactivity.this, DashboardActivity.class);
                 } else {
                     intent = new Intent(Splashactivity.this, LoginActivity.class);
-
                 }
+
+//                String authToken = PreferenceUtil.getInstance().getStringValue(PreferenceKey.KEY_AUTH_TOKEN, "");
+//                Intent intent = null;
+//                if (!TextUtils.isEmpty(authToken)) {
+//                    intent = new Intent(Splashactivity.this, MainActivity.class);
+//
+//                } else {
+//                    intent = new Intent(Splashactivity.this, LoginActivity.class);
+//
+//                }
                 startActivity(intent);
                 finish();
             }

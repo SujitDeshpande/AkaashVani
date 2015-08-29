@@ -1,15 +1,12 @@
 package com.locastio.akaashvani.services;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.locastio.akaashvani.data.Group;
-import com.locastio.akaashvani.data.User;
 import com.locastio.akaashvani.data.UserGroup;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
 
 /**
  * Created by ketan on 29/08/15.
@@ -30,7 +27,7 @@ public class GroupAPI {
 
     public void addGroup(String name) {
 
-        final User user = (User)ParseUser.getCurrentUser();
+        final ParseUser user = ParseUser.getCurrentUser();
         if (user == null) {
             throw new RuntimeException("User needs to be signed up first.");
 //            return;
