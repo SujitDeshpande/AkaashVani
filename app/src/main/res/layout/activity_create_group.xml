@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/application_background"
+    tools:context="com.locastio.akaashvani.screen.DashboardActivity">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_bar"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+
+        <!--<android.support.v7.widget.RecyclerView
+            android:id="@+id/contacts_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>-->
+
+        <LinearLayout
+            android:id="@+id/find_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/grp_name_grp_editText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:background="@drawable/akash_vani_theme_edit_text_holo_light"
+                android:hint="Group Name"
+                android:inputType="text"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/text_hint_color" />
+
+            <EditText
+                android:id="@+id/phone_create_grp_editText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:background="@drawable/akash_vani_theme_edit_text_holo_light"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:singleLine="true"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/text_hint_color" />
+
+            <Button
+                android:id="@+id/find_button"
+                style="@style/Buttonakash_vani_theme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".7"
+                android:singleLine="true"
+                android:text="Find"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/contacts_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/create_button"
+            android:layout_below="@+id/find_layout">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/create_button"
+            style="@style/Buttonakash_vani_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_weight=".7"
+            android:singleLine="true"
+            android:text="Create"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+</RelativeLayout>

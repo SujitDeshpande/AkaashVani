@@ -3,34 +3,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/application_background"
     tools:context="com.locastio.akaashvani.screen.DashboardActivity">
 
-    <LinearLayout
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_below="@+id/app_bar"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
-        <include
-            android:id="@+id/app_bar"
-            layout="@layout/app_bar" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/group_recyclerview"
+        <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/group_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/app_bar">
 
+            </android.support.v7.widget.RecyclerView>
 
-    </LinearLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/create_grp_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:src="@drawable/ic_create_grp_add_circle"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/create_grp_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:src="@drawable/ic_create_grp_add_circle"
-        app:elevation="6dp"
-        app:pressedTranslationZ="12dp" />
+        </FrameLayout>
 
+    </RelativeLayout>
 </RelativeLayout>

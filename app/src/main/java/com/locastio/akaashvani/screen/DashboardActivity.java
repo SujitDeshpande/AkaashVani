@@ -1,11 +1,15 @@
 package com.locastio.akaashvani.screen;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Toast;
 
+import com.locastio.akaashvani.BaseActivity;
 import com.locastio.akaashvani.Information;
 import com.locastio.akaashvani.R;
 import com.locastio.akaashvani.adapter.GroupRecycleViewAdapter;
@@ -13,10 +17,11 @@ import com.locastio.akaashvani.adapter.GroupRecycleViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends BaseActivity {
 
     private RecyclerView mGrpRecyclerView;
     private GroupRecycleViewAdapter mGrpAdapter;
+    private FloatingActionButton mCreateGrpFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,16 @@ public class DashboardActivity extends AppCompatActivity {
 
         mGrpRecyclerView.setLayoutManager(new LinearLayoutManager(DashboardActivity.this));
         mGrpRecyclerView.setAdapter(mGrpAdapter);
+
+        mCreateGrpFab = (FloatingActionButton) findViewById(R.id.create_grp_fab);
+        mCreateGrpFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(DashboardActivity.this, "Fab Clicked .", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(DashboardActivity.this, CreateGroupActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /**

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.locastio.akaashvani.BaseActivity;
 import com.locastio.akaashvani.R;
 import com.locastio.akaashvani.services.UserAPI;
+import com.locastio.akaashvani.util.AkashVaniUtility;
 import com.parse.ParseUser;
 
 public class RegistrationActivity extends BaseActivity implements View.OnClickListener, UserAPI.Callback {
@@ -52,9 +53,14 @@ public class RegistrationActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.register_button:
-                if (localValidation()) {
-                    UserAPI userAPI = new UserAPI(this);
-                    userAPI.registerUser(mPhoneNumber.getText().toString(), mPasswordEdittext.getText().toString(), mNameEdittext.getText().toString());
+
+                if (AkashVaniUtility.checkNetworkConnection(RegistrationActivity.this)) {
+                    if (localValidation()) {
+                        UserAPI userAPI = new UserAPI(this);
+                        userAPI.registerUser(mPhoneNumber.getText().toString(), mPasswordEdittext.getText().toString(), mNameEdittext.getText().toString());
+                    }
+                } else {
+                    Toast.makeText(RegistrationActivity.this, "Please check your network connection.", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

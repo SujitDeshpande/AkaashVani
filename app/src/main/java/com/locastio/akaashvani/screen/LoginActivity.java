@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.locastio.akaashvani.BaseActivity;
 import com.locastio.akaashvani.R;
 import com.locastio.akaashvani.services.UserAPI;
+import com.locastio.akaashvani.util.AkashVaniUtility;
 import com.parse.ParseUser;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, UserAPI.Callback {
@@ -51,9 +52,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         switch (v.getId()) {
             case R.id.login_button:
 
-                if (localValidation()) {
-                    UserAPI userAPI = new UserAPI(this);
-                    userAPI.login(mPhoneEditText.getText().toString(), mPasswordEditText.getText().toString());
+                if (AkashVaniUtility.checkNetworkConnection(LoginActivity.this)) {
+
+                    if (localValidation()) {
+                        UserAPI userAPI = new UserAPI(this);
+                        userAPI.login(mPhoneEditText.getText().toString(), mPasswordEditText.getText().toString());
+                    }
+                } else {
+                    Toast.makeText(LoginActivity.this, "Please check your network connection.", Toast.LENGTH_SHORT).show();
                 }
 
                 break;

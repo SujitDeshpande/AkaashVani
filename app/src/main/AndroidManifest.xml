@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.locastio.akaashvani" >
+    package="com.locastio.akaashvani">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:name=".AkaashvaniApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
-        </activity>
+        android:theme="@style/AppTheme">
+
         <activity
             android:name="com.parse.ui.ParseLoginActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop">
             <meta-data
                 android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_ENABLED"
                 android:value="false" />
@@ -51,8 +49,8 @@
 
         <activity
             android:name=".screen.Splashactivity"
-            android:label="@string/title_activity_registration"
-            android:screenOrientation="portrait" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -61,17 +59,16 @@
         </activity>
         <activity
             android:name=".screen.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".screen.RegistrationActivity"
-            android:label="@string/title_activity_registration"
             android:screenOrientation="portrait" />
         <activity
             android:name=".screen.DashboardActivity"
-            android:label="@string/title_activity_dashboard" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".screen.CreateGroupActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
