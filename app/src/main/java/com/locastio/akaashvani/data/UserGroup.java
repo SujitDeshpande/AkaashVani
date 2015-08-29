@@ -1,12 +1,18 @@
 package com.locastio.akaashvani.data;
 
+import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 /**
  * Created by ketan on 29/08/15.
  */
+@ParseClassName("UserGroup")
 public class UserGroup extends ParseObject {
+
+//    public UserGroup() {
+//
+//    }
 
     // User
     public ParseUser getUser() {

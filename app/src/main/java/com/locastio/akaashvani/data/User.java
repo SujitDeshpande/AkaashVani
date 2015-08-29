@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.parse.LogInCallback;
 import com.parse.Parse;
+import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * Created by ketan on 29/08/15.
  */
+@ParseClassName("User")
 public class User extends ParseUser {
 
     // name

@@ -1,5 +1,6 @@
 package com.locastio.akaashvani.data;
 
+import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -8,7 +9,12 @@ import com.parse.SaveCallback;
 /**
  * Created by ketan on 29/08/15.
  */
+@ParseClassName("Group")
 public class Group extends ParseObject {
+
+//    Group() {
+//
+//    }
 
     // name
     public String getName() {
