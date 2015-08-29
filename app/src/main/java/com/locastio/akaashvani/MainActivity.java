@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = getArguments();
             textView.setText("The Page Currently Selected is: " + bundle.getInt("position"));
             Log.i("onCreateView", "The Page Currently Selected is: " + bundle.getInt("position"));
+//            Log.i("onCreateView", "The Page Currently Selected is: " + savedInstanceState.getInt("position"));
             return layout;
         }
     }
