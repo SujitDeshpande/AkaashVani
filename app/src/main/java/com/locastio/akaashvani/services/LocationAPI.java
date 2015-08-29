@@ -6,8 +6,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.locastio.akaashvani.data.User;
-import com.locastio.akaashvani.data.UserLocation;
 import com.parse.ParseUser;
 
 /**
@@ -32,7 +30,7 @@ public class LocationAPI {
     Callback callback;
 
 
-    public void updateLocationOfUser(User user, Location location) {
+    public void updateLocationOfUser(ParseUser user, Location location) {
 //        UserLocation userLocation = new UserLocation("objId", location);
 
         Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
@@ -40,7 +38,7 @@ public class LocationAPI {
 
     }
 
-    public void trackUserLocation(User user) {
+    public void trackUserLocation(ParseUser user) {
         Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
         mUserFirebaseRefLocation.addValueEventListener(new ValueEventListener() {
             @Override
@@ -54,7 +52,7 @@ public class LocationAPI {
             }
         });
     }
-    public void removeTrackingForUser(User user) {
+    public void removeTrackingForUser(ParseUser user) {
         Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
 //        mUserFirebaseRefLocation.removeEventListener();
 
