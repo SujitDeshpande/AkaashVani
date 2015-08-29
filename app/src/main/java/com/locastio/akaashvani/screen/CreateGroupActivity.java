@@ -1,6 +1,7 @@
 package com.locastio.akaashvani.screen;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -95,6 +96,8 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
 
                 if (AkashVaniUtility.checkNetworkConnection(CreateGroupActivity.this)) {
                     if (localValidation()) {
+
+                        showProgressDialog(CreateGroupActivity.this, "finding user ...");
                         UserAPI userAPI = new UserAPI(this);
                         userAPI.getUser(mPhoneNumberEditText.getText().toString());
 
@@ -107,17 +110,28 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
 
                     }
                 } else {
-                    Toast.makeText(CreateGroupActivity.this, "Please check your network connection.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateGroupActivity.this, R.string.network_issue, Toast.LENGTH_SHORT).show();
                 }
                 break;
 
             case R.id.create_button:
 
                 if (AkashVaniUtility.checkNetworkConnection(CreateGroupActivity.this)) {
+                    showProgressDialog(CreateGroupActivity.this, "Creating group ...");
                     GroupAPI groupAPI = new GroupAPI(this);
-                    groupAPI.createGroup(mGroupNameEditText.getText().toString(),mTempUserList) ;
+                    boolean bool_grpCreated = groupAPI.createGroup(mGroupNameEditText.getText().toString(), mTempUserList);
+                    dismissProgressDialog();
+
+                    if (bool_grpCreated) {
+                        Intent intent = new Intent(CreateGroupActivity.this, DashboardActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(CreateGroupActivity.this, "Group not created, something went wrong.", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
-                    Toast.makeText(CreateGroupActivity.this, "Please check your network connection.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateGroupActivity.this, R.string.network_issue, Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -158,6 +172,8 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void didRetriveUser(ParseUser user) {
+
+        dismissProgressDialog();
         if (user != null) {
             mCreateButton.setEnabled(true);
 
@@ -189,6 +205,7 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void didFailed(String str) {
+        dismissProgressDialog();
         mPhoneNumberEditText.setText("");
         Toast.makeText(CreateGroupActivity.this, str, Toast.LENGTH_SHORT).show(); // user not found
     }

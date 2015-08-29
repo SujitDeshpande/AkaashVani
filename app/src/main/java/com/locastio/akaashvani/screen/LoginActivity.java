@@ -61,7 +61,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                         userAPI.login(mPhoneEditText.getText().toString(), mPasswordEditText.getText().toString());
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Please check your network connection.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, R.string.network_issue, Toast.LENGTH_SHORT).show();
                 }
 
                 break;
@@ -98,6 +98,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void didLogin(ParseUser user) {
 
+        dismissProgressDialog();
         if (user != null) {
 
             Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
@@ -113,6 +114,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void didFailed() {
+        dismissProgressDialog();
         Toast.makeText(LoginActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
     }
 

@@ -54,13 +54,14 @@ public class RegistrationActivity extends BaseActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.register_button:
 
+                showProgressDialog(RegistrationActivity.this, "Registering user ...");
                 if (AkashVaniUtility.checkNetworkConnection(RegistrationActivity.this)) {
                     if (localValidation()) {
                         UserAPI userAPI = new UserAPI(this);
                         userAPI.registerUser(mPhoneNumber.getText().toString(), mPasswordEdittext.getText().toString(), mNameEdittext.getText().toString());
                     }
                 } else {
-                    Toast.makeText(RegistrationActivity.this, "Please check your network connection.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistrationActivity.this, R.string.network_issue, Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -87,6 +88,7 @@ public class RegistrationActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void didRegister(ParseUser user) {
+        dismissProgressDialog();
         if (user != null) {
             Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
             startActivity(intent);
