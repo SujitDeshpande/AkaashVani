@@ -1,6 +1,7 @@
 package com.locastio.akaashvani.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,18 +10,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.locastio.akaashvani.Information;
+import com.locastio.akaashvani.MapActivity;
 import com.locastio.akaashvani.R;
 
 import java.util.List;
 
-/**
- * Created by Sujit on 22/08/15.
- */
 public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleViewAdapter.MyViewHolder> {
     List<Information> data;
+    Context mContext;
 
     public GroupRecycleViewAdapter(Context context, List<Information> information) {
         data = information;
+        mContext = context;
     }
 
     @Override
@@ -37,12 +38,20 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
 //        holder.image.setImageResource(current.iconID);
         Log.i("Custom Message", "onBindViewHolder " + current.title);
 //        Log.i("Custom Message", "onBindViewHolder " + current.iconID);
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, MapActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return data.size();
     }
+
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -53,6 +62,10 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.list_msg);
 //            image = (ImageView) itemView.findViewById(R.id.list_img);
+
         }
+
     }
+
+
 }
