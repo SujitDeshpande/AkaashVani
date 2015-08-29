@@ -97,7 +97,7 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
                 if (AkashVaniUtility.checkNetworkConnection(CreateGroupActivity.this)) {
                     if (localValidation()) {
 
-                        showProgressDialog(CreateGroupActivity.this, "finding user ...");
+                        showProgressDialog(CreateGroupActivity.this, "Finding user ...");
                         UserAPI userAPI = new UserAPI(this);
                         userAPI.getUser(mPhoneNumberEditText.getText().toString());
 

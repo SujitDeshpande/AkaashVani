@@ -2,14 +2,11 @@ package com.locastio.akaashvani.services;
 
 import android.util.Log;
 
-import com.locastio.akaashvani.data.Group;
-import com.locastio.akaashvani.data.UserGroup;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -19,10 +16,11 @@ import java.util.List;
 public class UserGroupAPI {
 
     public interface Callback {
-        public void didAddUserGroup(UserGroup userGroup);
-        public void didRetrievedMyGroups(List<UserGroup> groupList);
-        public void didFailed();
+        public void didRetrievedMyGroups(List<ParseObject> groupList);
+
+        public void didRetrieveGrpFailed(String s);
     }
+
     Callback callback;
 
     public UserGroupAPI(Callback callback) {
@@ -31,39 +29,17 @@ public class UserGroupAPI {
 
     }
 
-    public void addUserGroup(ParseUser user, Group group) {
-
-        final UserGroup userGroup = new UserGroup();
-        userGroup.setUser(user);
-        userGroup.setGroup(group);
-        userGroup.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    if (callback != null) {
-                        callback.didAddUserGroup(userGroup);
-                    }
-                } else {
-                    if (callback != null) {
-                        callback.didFailed();
-                    }
-                }
-            }
-        });
-
-
-
-    }
-
     public void getMyGroups() {
         ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserGroup");
 
+        query.include("group");
         query.whereEqualTo("user", user);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> userGroupList, ParseException e) {
                 if (e == null) {
                     Log.d("Groups", "Retrieved " + userGroupList.size() + " groups");
+                    callback.didRetrievedMyGroups(userGroupList);
                 } else {
                     Log.d("Groups", "Error: " + e.getMessage());
                 }

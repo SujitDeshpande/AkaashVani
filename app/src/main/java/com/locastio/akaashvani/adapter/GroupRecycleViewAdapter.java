@@ -3,42 +3,43 @@ package com.locastio.akaashvani.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.locastio.akaashvani.Information;
 import com.locastio.akaashvani.MapActivity;
 import com.locastio.akaashvani.R;
+import com.locastio.akaashvani.data.Group;
 
 import java.util.List;
 
-public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleViewAdapter.MyViewHolder> {
-    List<Information> data;
+public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleViewAdapter.GroupNameViewHolder> {
+    List<Group> data;
     Context mContext;
 
-    public GroupRecycleViewAdapter(Context context, List<Information> information) {
-        data = information;
+    public GroupRecycleViewAdapter(Context context, List<Group> groups) {
+        data = groups;
         mContext = context;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public GroupNameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_grp_layout, parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
+        GroupNameViewHolder holder = new GroupNameViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Information current = data.get(position);
-        holder.title.setText(current.title);
-//        holder.image.setImageResource(current.iconID);
-        Log.i("Custom Message", "onBindViewHolder " + current.title);
-//        Log.i("Custom Message", "onBindViewHolder " + current.iconID);
-        holder.title.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(GroupNameViewHolder holder, int position) {
+        Group currentGrp = data.get(position);
+
+        if (!TextUtils.isEmpty(currentGrp.getName())) {
+            holder.mGrpNameTextView.setText(currentGrp.getName());
+        }
+
+        holder.mGrpNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, MapActivity.class);
@@ -53,14 +54,14 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
     }
 
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class GroupNameViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title;
+        TextView mGrpNameTextView;
 //        ImageView image;
 
-        public MyViewHolder(View itemView) {
+        public GroupNameViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.list_msg);
+            mGrpNameTextView = (TextView) itemView.findViewById(R.id.groupName_textview);
 //            image = (ImageView) itemView.findViewById(R.id.list_img);
 
         }
