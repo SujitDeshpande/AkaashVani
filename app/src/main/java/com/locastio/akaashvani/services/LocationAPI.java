@@ -6,8 +6,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.locastio.akaashvani.data.User;
-import com.locastio.akaashvani.data.UserLocation;
 import com.parse.ParseUser;
 
 /**
@@ -32,16 +30,16 @@ public class LocationAPI {
     Callback callback;
 
 
-    public void updateLocationOfUser(User user, Location location) {
+    public void updateLocationOfUser(ParseUser parseUser, Location location) {
 //        UserLocation userLocation = new UserLocation("objId", location);
 
-        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
+        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+parseUser.getObjectId());
         mUserFirebaseRefLocation.push().setValue(location);
 
     }
 
-    public void trackUserLocation(User user) {
-        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
+    public void trackUserLocation(ParseUser parseUser) {
+        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+parseUser.getObjectId());
         mUserFirebaseRefLocation.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -54,8 +52,8 @@ public class LocationAPI {
             }
         });
     }
-    public void removeTrackingForUser(User user) {
-        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+user.getObjectId());
+    public void removeTrackingForUser(ParseUser parseUser) {
+        Firebase mUserFirebaseRefLocation = mFirebaseRefLocation.child(""+parseUser.getObjectId());
 //        mUserFirebaseRefLocation.removeEventListener();
 
     }

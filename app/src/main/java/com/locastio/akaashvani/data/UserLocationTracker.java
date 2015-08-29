@@ -14,13 +14,13 @@ import java.util.HashMap;
 public class UserLocationTracker {
 
     private Firebase mUserFirebaseRefLocation;
+    private ParseUser parseUser;
     private static final String FIREBASE_URL = "https://akaashvani.firebaseio.com/";
-    private User user;
-    public UserLocationTracker(Callback callback, User user) {
+    public UserLocationTracker(Callback callback, ParseUser parseUser) {
         this.callback = callback;
-        this.user = user;
+        this.parseUser = parseUser;
         Firebase mFirebaseRefLocation = new Firebase(FIREBASE_URL).child("location");
-        mUserFirebaseRefLocation = mFirebaseRefLocation.child("" + user.getObjectId());
+        mUserFirebaseRefLocation = mFirebaseRefLocation.child("" + parseUser.getObjectId());
 
     }
 
