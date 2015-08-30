@@ -9,6 +9,7 @@
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="6dp"
         android:layout_above="@+id/listFooter"
         android:layout_alignParentTop="true"
         android:transcriptMode="alwaysScroll" />
@@ -27,6 +28,8 @@
             android:layout_weight="1"
             android:inputType="textShortMessage"
             android:lines="1"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/text_hint_color"
             android:singleLine="true" />
 
         <ImageButton

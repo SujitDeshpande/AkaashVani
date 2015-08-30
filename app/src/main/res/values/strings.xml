@@ -22,5 +22,8 @@
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="title_activity_create_group">CreateGroupActivity</string>
     <string name="network_issue">Please check your network connection.</string>
+    <!--<string name="google_maps_key">AIzaSyDYPEmn_im45MaiAewIOXruCRU4_IFUCjQ</string>  ankur -->
     <string name="google_maps_key">AIzaSyD3iDbfuLunFVV2w7Mo2EhjnrJ7rFCGNrA</string>
+    <string name="title_activity_tab_location_chat">TabLocationChat</string> <!--sujitapi key  -->
+
 </resources>

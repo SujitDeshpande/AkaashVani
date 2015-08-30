@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.locastio.akaashvani.MapActivity;
 import com.locastio.akaashvani.R;
 import com.locastio.akaashvani.data.Group;
+import com.locastio.akaashvani.screen.TabLocationChatActivity;
 
 import java.util.List;
 
@@ -42,8 +42,10 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
         holder.mGrpNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, MapActivity.class);
+                Intent intent = new Intent(mContext, TabLocationChatActivity.class);
                 intent.putExtra("groupObjId", currentGrp.getObjectId());
+                intent.putExtra("groupName", currentGrp.getName());
+
                 mContext.startActivity(intent);
             }
         });

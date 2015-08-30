@@ -1,11 +1,14 @@
-package com.locastio.akaashvani;
+package com.locastio.akaashvani.screen.fragment;
 
+import android.app.Activity;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.firebase.client.DataSnapshot;
 import com.google.android.gms.common.ConnectionResult;
@@ -13,11 +16,11 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.locastio.akaashvani.Markers;
+import com.locastio.akaashvani.R;
 import com.locastio.akaashvani.data.Group;
 import com.locastio.akaashvani.data.UserGroup;
 import com.locastio.akaashvani.services.LocationAPI;
@@ -34,11 +37,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MapActivity extends BaseActivity implements LocationAPI.Callback, GPSTracker.Callback, UserGroupAPI.Callback, LocationTrackerAPI.Callback, OnMapReadyCallback {
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link Locationfragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link Locationfragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class Locationfragment extends Fragment implements LocationAPI.Callback, GPSTracker.Callback, UserGroupAPI.Callback, LocationTrackerAPI.Callback {
+
 
     private static final String TAG = "LocationActivity";
     private static final long INTERVAL = 1000 * 60 * 1; //1 minute
     private static final long FASTEST_INTERVAL = 1000 * 5 * 1; // 1 minute
+    private static String strGroupObjId;
     private GoogleApiClient mGoogleApiClient;
     private Location mCurrentLocation;
     private String mLastUpdateTime;
@@ -48,8 +61,6 @@ public class MapActivity extends BaseActivity implements LocationAPI.Callback, G
     HashMap<String, Markers> hashMapMarkerOptions = new HashMap<>();
 
     List<Markers> markers = new ArrayList<Markers>();
-
-
     GPSTracker gpsTracker;
 
     // flag for GPS status
@@ -66,46 +77,89 @@ public class MapActivity extends BaseActivity implements LocationAPI.Callback, G
     double longitude; // longitude
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 10 meters
+    private final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 10 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000; //1000 * 5 * 1; // 1 minute
+    private final long MIN_TIME_BW_UPDATES = 1000; //1000 * 5 * 1; // 1 minute
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment Locationfragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static Locationfragment newInstance(String param1, String param2) {
+        Locationfragment fragment = new Locationfragment();
+
+        strGroupObjId = param2;
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public Locationfragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        TextView toolbarTextView = (TextView) toolbar.findViewById(R.id.toolbar_heading);
-        toolbarTextView.setText(getIntent().getStringExtra("groupName"));
-        setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.activity_maps, container, false);
 
         setUpMapIfNeeded();
+        startLocationUpdates();
 
-//        super.onCreate(savedInstanceState);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-//
-        String strGroupObjId = getIntent().getStringExtra("groupObjId");
-//
+        // Inflate the layout for this fragment
+        return view;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
         UserGroupAPI userGroupAPI = new UserGroupAPI(this);
         userGroupAPI.getUserGroupsOfGroupId(strGroupObjId);
         Log.d("k10:", strGroupObjId);
-//
-//
-        gpsTracker = new GPSTracker(this, this);
-//        gpsTracker.getLocation();
-//
-//        markers = getData();
-//        setContentView(R.layout.activity_maps);
-//        Log.d(TAG, "onCreate ...............................");
+
+        gpsTracker = new GPSTracker(getActivity(), this);
         //show error dialog if GoolglePlayServices not available
         if (!isGooglePlayServicesAvailable()) {
-            finish();
+            getActivity().finish();
         }
 //
         gpsTracker.getLocation();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        stopLocationUpdates();
+        stopTrackingGroup();
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        public void onFragmentInteraction(Uri uri);
     }
 
     /**
@@ -127,7 +181,7 @@ public class MapActivity extends BaseActivity implements LocationAPI.Callback, G
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+            mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map))
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
@@ -164,11 +218,11 @@ public class MapActivity extends BaseActivity implements LocationAPI.Callback, G
     }
 
     private boolean isGooglePlayServicesAvailable() {
-        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
         if (ConnectionResult.SUCCESS == status) {
             return true;
         } else {
-            GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
+            GooglePlayServicesUtil.getErrorDialog(status, getActivity(), 0).show();
             return false;
         }
     }
@@ -190,7 +244,7 @@ public class MapActivity extends BaseActivity implements LocationAPI.Callback, G
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         stopLocationUpdates();
     }
@@ -198,6 +252,7 @@ public class MapActivity extends BaseActivity implements LocationAPI.Callback, G
     protected void stopLocationUpdates() {
 /*        LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);*/
+
         Log.d(TAG, "Location update stopped .......................");
     }
 
@@ -221,6 +276,8 @@ public class MapActivity extends BaseActivity implements LocationAPI.Callback, G
         Log.d(TAG, "Firing onLocationChanged..............................................");
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+
+
 
     }
 
@@ -271,6 +328,8 @@ public class MapActivity extends BaseActivity implements LocationAPI.Callback, G
             locationTrackerAPI.trackUserLocation(userGroup.getUser());
             locationTrackerAPIList.add(locationTrackerAPI);
         }
+
+        addMarkers();
     }
 
     void stopTrackingGroup() {
@@ -324,11 +383,7 @@ public class MapActivity extends BaseActivity implements LocationAPI.Callback, G
                 isAnimated = true;
             }
 
-//            mMap.addMarker(new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker"));
-//            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker");
-//            markerOptions.position(new LatLng(1,1));
-
-            Toast.makeText(this, "User " + parseUser.get("fullname") + ":" + latitude + ":" + longitude, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "User " + parseUser.get("fullname") + ":" + latitude + ":" + longitude, Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -340,16 +395,4 @@ public class MapActivity extends BaseActivity implements LocationAPI.Callback, G
 
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(12.889, 77.622), 16));
-
-        // You can customize the marker image using images bundled with
-        // your app, or dynamically generated bitmaps.
-        mMap.addMarker(new MarkerOptions()
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_create_grp_add_circle))
-                .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
-                .position(new LatLng(13.11, 12.22)));
-    }
 }
