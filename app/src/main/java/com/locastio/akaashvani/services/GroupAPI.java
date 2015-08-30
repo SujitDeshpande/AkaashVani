@@ -57,7 +57,16 @@ public class GroupAPI {
         if (group == null) {
             return false;
         }
+        UserGroup currentUserGroup = new UserGroup();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUserGroup.setUser(currentUser);
+        currentUserGroup.setGroup(group);
+        currentUserGroup.saveInBackground();
+
         for (ParseUser user: userList) {
+            if (user.getObjectId() == currentUser.getObjectId()) {
+                continue;
+            }
             UserGroup userGroup = new UserGroup();
             userGroup.setUser(user);
             userGroup.setGroup(group);
