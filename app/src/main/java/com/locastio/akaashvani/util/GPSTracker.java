@@ -15,11 +15,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.parse.ParseUser;
-
 public class GPSTracker extends Service implements LocationListener {
 
     // The callback interface
