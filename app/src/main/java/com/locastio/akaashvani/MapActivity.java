@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapActivity extends FragmentActivity implements LocationAPI.Callback, GPSTracker.Callback, UserGroupAPI.Callback, LocationTrackerAPI.Callback {
 
@@ -41,7 +42,7 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
     private GoogleMap mMap;
     private android.location.LocationListener locationListener;
 
-    HashMap<String, MarkerOptions> hashMapMarkerOptions = new HashMap<>();
+    HashMap<String, Markers> hashMapMarkerOptions = new HashMap<>();
 
     List<Markers> markers = new ArrayList<Markers>();
 
@@ -193,11 +194,10 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
 
     private void addMarkers() {
         mMap.clear();
-        for (int i = 0; i < markers.size(); i++) {
-            Markers currentMarker = markers.get(i);
-
+        for(Map.Entry entry: hashMapMarkerOptions.entrySet()){
+            Markers markers = (Markers)entry.getValue();
             MarkerOptions markerOptions = new MarkerOptions()
-                    .position(new LatLng(currentMarker.latitude, currentMarker.longitude));
+                    .position(new LatLng(markers.latitude, markers.longitude));
 
             mMap.addMarker(markerOptions);
         }
@@ -336,18 +336,31 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
 
         if (latitude != 0 && longitude != 0) {
 
-            MarkerOptions markerOptions = hashMapMarkerOptions.get(parseUser.getObjectId());
-            if (markerOptions == null) {
-                String fullname = (String) parseUser.get("fullname");
-                markerOptions = new MarkerOptions().position(new LatLng(latitude, longitude)).title(fullname);
-                mMap.addMarker(markerOptions);
-            } else {
-                markerOptions.position(new LatLng(latitude, longitude));
+            String strParseUserObjId = parseUser.getObjectId();
+            Markers markers = null;
+            for(Map.Entry entry: hashMapMarkerOptions.entrySet()){
+                if (strParseUserObjId.equalsIgnoreCase((String)entry.getKey())) {
+                    markers = (Markers)entry.getValue();
+                    break;
+                }
+            }
+            if (markers == null) {
+//                String fullname = (String) parseUser.get("fullname");
+                markers = new Markers();
+//            } else {
+//                markerOptions.position(new LatLng(latitude, longitude));
+            }
+            markers.latitude = latitude;
+            markers.longitude = longitude;
+            hashMapMarkerOptions.put(strParseUserObjId, markers);
+
+            this.addMarkers();
+
+            if (!isAnimated) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude),14));
+                    isAnimated = true;
             }
 
-
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude),
-                    14));
 //            mMap.addMarker(new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker"));
 //            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker");
 //            markerOptions.position(new LatLng(1,1));
@@ -356,6 +369,8 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
         }
 
     }
+
+    boolean isAnimated = false;
 
     @Override
     public void didCancelledLocationTrackingOfUser(ParseUser parseUser) {
