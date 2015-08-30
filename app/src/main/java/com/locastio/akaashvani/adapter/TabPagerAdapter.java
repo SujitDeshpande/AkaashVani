@@ -36,11 +36,11 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return Locationfragment.newInstance("" + position, "location");
+                return Locationfragment.newInstance("" + position, mGroupObjId);
             case 1:
                 return ChatFragment.newInstance("" +position, mGroupObjId);
             default:
-                return Locationfragment.newInstance("" + position, "location");
+                return Locationfragment.newInstance("" + position, mGroupObjId);
         }
     }
 
