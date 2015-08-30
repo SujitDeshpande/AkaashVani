@@ -63,22 +63,20 @@
                 android:hint="Password"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/text_hint_color"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-                android:inputType="textPassword"
-                android:maxLength="20"
+                android:inputType="numberPassword"
+                android:maxLength="10"
                 android:singleLine="true" />
 
             <EditText
                 android:id="@+id/confirm_password_register_editText3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
                 android:background="@drawable/akash_vani_theme_edit_text_holo_light"
                 android:hint="Confirm Password"
-                android:inputType="textPassword"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/text_hint_color"
-                android:maxLength="20"
+                android:inputType="numberPassword"
+                android:maxLength="10"
                 android:singleLine="true" />
 
             <Button

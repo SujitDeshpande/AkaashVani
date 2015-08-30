@@ -44,6 +44,8 @@ public class DashboardActivity extends BaseActivity implements UserGroupAPI.Call
 
         getUsersGroupApi();
 
+        initializeUiComponents();
+
     }
 
     /**
@@ -61,16 +63,12 @@ public class DashboardActivity extends BaseActivity implements UserGroupAPI.Call
     }
 
     /**
-     *  initializing UI componenets
+     * initializing UI componenets
      */
     private void initializeUiComponents() {
 
         mGrpRecyclerView = (RecyclerView) findViewById(R.id.group_recyclerview);
-
-        mGrpAdapter = new GroupRecycleViewAdapter(DashboardActivity.this, mGroupsArrayList);
-
         mGrpRecyclerView.setLayoutManager(new LinearLayoutManager(DashboardActivity.this));
-        mGrpRecyclerView.setAdapter(mGrpAdapter);
 
         mCreateGrpFab = (FloatingActionButton) findViewById(R.id.create_grp_fab);
         mCreateGrpFab.setOnClickListener(new View.OnClickListener() {
@@ -93,18 +91,13 @@ public class DashboardActivity extends BaseActivity implements UserGroupAPI.Call
                 UserGroup userGroup = (UserGroup) userGroupObj;
                 Group group = userGroup.getGroup();
 
-//                group.fetchInBackground();
-//                try {
-//                    group.fetchIfNeeded();
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
                 mGroupsArrayList.add(group);
             }
 
-            initializeUiComponents();
+            mGrpAdapter = new GroupRecycleViewAdapter(DashboardActivity.this, mGroupsArrayList);
+            mGrpRecyclerView.setAdapter(mGrpAdapter);
         } else {
-            Toast.makeText(DashboardActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+            Toast.makeText(DashboardActivity.this, R.string.no_groups_fr_you, Toast.LENGTH_SHORT).show();
         }
     }
 

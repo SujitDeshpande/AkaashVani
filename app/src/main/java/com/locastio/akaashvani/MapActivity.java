@@ -88,7 +88,7 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
         gpsTracker = new GPSTracker(this, this);
 //        gpsTracker.getLocation();
 //
-        markers = getData();
+//        markers = getData();
 //        setContentView(R.layout.activity_maps);
 //        Log.d(TAG, "onCreate ...............................");
         //show error dialog if GoolglePlayServices not available
@@ -146,18 +146,18 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
 //        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 //    }
 //
-    public static List<Markers> getData() {
-        List<Markers> data = new ArrayList<>();
-        double[] lats = {12.9715011, 12.968064};
-        double[] longs = {77.5959849, 77.5950677};
-        for (int i = 0; (i < lats.length); i++) {
-            Markers current = new Markers();
-            current.latitude = lats[i];
-            current.longitude = longs[i];
-            data.add(current);
-        }
-        return data;
-    }
+//    public static List<Markers> getData() {
+//        List<Markers> data = new ArrayList<>();
+//        double[] lats = {12.9715011, 12.968064};
+//        double[] longs = {77.5959849, 77.5950677};
+//        for (int i = 0; (i < lats.length); i++) {
+//            Markers current = new Markers();
+//            current.latitude = lats[i];
+//            current.longitude = longs[i];
+//            data.add(current);
+//        }
+//        return data;
+//    }
 
     @Override
     public void onStart() {
@@ -203,28 +203,28 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
         }
     }
 
-    private void addMarker() {
-        MarkerOptions options = new MarkerOptions();
-
-        // following four lines requires 'Google Maps Android API Utility Library'
-        // https://developers.google.com/maps/documentation/android/utility/
-        // I have used this to display the time as title for location markers
-        // you can safely comment the following four lines but for this info
-        /*IconGenerator iconFactory = new IconGenerator(this);
-        iconFactory.setStyle(IconGenerator.STYLE_PURPLE);
-        options.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(mLastUpdateTime)));
-        options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());*/
-
-        LatLng currentLatLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-        options.position(currentLatLng);
-
-        //mMarker = googleMap.addMarker(options);
-        Log.d(TAG, "Marker added.............................");
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,
-                17));
-        Log.d(TAG, "Zoom done.............................");
-        addMarkers();
-    }
+//    private void addMarker() {
+//        MarkerOptions options = new MarkerOptions();
+//
+//        // following four lines requires 'Google Maps Android API Utility Library'
+//        // https://developers.google.com/maps/documentation/android/utility/
+//        // I have used this to display the time as title for location markers
+//        // you can safely comment the following four lines but for this info
+//        /*IconGenerator iconFactory = new IconGenerator(this);
+//        iconFactory.setStyle(IconGenerator.STYLE_PURPLE);
+//        options.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(mLastUpdateTime)));
+//        options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());*/
+//
+//        LatLng currentLatLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+//        options.position(currentLatLng);
+//
+//        //mMarker = googleMap.addMarker(options);
+//        Log.d(TAG, "Marker added.............................");
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,
+//                14));
+//        Log.d(TAG, "Zoom done.............................");
+////        addMarkers();
+//    }
 
     @Override
     protected void onPause() {
@@ -249,7 +249,6 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
         //}
     }
 
-
     @Override
     public void didUpdateLocation(Location location) {
         LocationAPI locationAPI = new LocationAPI(null);
@@ -259,7 +258,6 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
         Log.d(TAG, "Firing onLocationChanged..............................................");
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        addMarker();
 
     }
 
@@ -340,7 +338,7 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
 
             MarkerOptions markerOptions = hashMapMarkerOptions.get(parseUser.getObjectId());
             if (markerOptions == null) {
-                String fullname = (String)parseUser.get("fullname");
+                String fullname = (String) parseUser.get("fullname");
                 markerOptions = new MarkerOptions().position(new LatLng(latitude, longitude)).title(fullname);
                 mMap.addMarker(markerOptions);
             } else {
@@ -348,6 +346,8 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
             }
 
 
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude),
+                    14));
 //            mMap.addMarker(new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker"));
 //            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker");
 //            markerOptions.position(new LatLng(1,1));
