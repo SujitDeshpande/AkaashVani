@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.google.android.gms.common.ConnectionResult;
@@ -115,6 +116,17 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback, 
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_maps, container, false);
+        UserGroupAPI userGroupAPI = new UserGroupAPI(this);
+        userGroupAPI.getUserGroupsOfGroupId(strGroupObjId);
+        Log.d("k10:", strGroupObjId);
+
+        gpsTracker = new GPSTracker(getActivity(), this);
+        //show error dialog if GoolglePlayServices not available
+        if (!isGooglePlayServicesAvailable()) {
+            getActivity().finish();
+        }
+//
+        gpsTracker.getLocation();
 
         setUpMapIfNeeded();
         startLocationUpdates();
@@ -127,17 +139,7 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback, 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        UserGroupAPI userGroupAPI = new UserGroupAPI(this);
-        userGroupAPI.getUserGroupsOfGroupId(strGroupObjId);
-        Log.d("k10:", strGroupObjId);
 
-        gpsTracker = new GPSTracker(getActivity(), this);
-        //show error dialog if GoolglePlayServices not available
-        if (!isGooglePlayServicesAvailable()) {
-            getActivity().finish();
-        }
-//
-        gpsTracker.getLocation();
     }
 
     @Override
@@ -179,27 +181,43 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback, 
      */
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map))
                     .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                setUpMap();
-            }
-        }
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+            mMap.setMyLocationEnabled(true);
+            mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                @Override
+                public boolean onMyLocationButtonClick() {
+                    gpsTracker.getLocation();
+                    addMarkers();
+                    return true;
+                }
+            });
+            addMarker();
     }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p/>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
-     */
-    private void setUpMap() {
-//        mMap.addMarker(new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker"));
-//        MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker");
-//        markerOptions.position(new LatLng(1,1));
+    private void addMarker() {
+        MarkerOptions options = new MarkerOptions();
+
+        // following four lines requires 'Google Maps Android API Utility Library'
+        // https://developers.google.com/maps/documentation/android/utility/
+        // I have used this to display the time as title for location markers
+        // you can safely comment the following four lines but for this info
+        /*IconGenerator iconFactory = new IconGenerator(this);
+        iconFactory.setStyle(IconGenerator.STYLE_PURPLE);
+        options.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(mLastUpdateTime)));
+        options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());*/
+
+        LatLng currentLatLng = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+        options.position(currentLatLng);
+
+        //mMarker = googleMap.addMarker(options);
+        Log.d(TAG, "Marker added.............................");
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,
+                17));
+        Log.d(TAG, "Zoom done.............................");
+        addMarkers();
     }
 
     @Override
@@ -233,8 +251,10 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback, 
     }
 
     private void addMarkers() {
+        Toast.makeText(getActivity(), "Add Markers", Toast.LENGTH_SHORT).show();
         mMap.clear();
         for (Map.Entry entry : hashMapMarkerOptions.entrySet()) {
+            Toast.makeText(getActivity(), "Inside For Loop", Toast.LENGTH_SHORT).show();
             Markers markers = (Markers) entry.getValue();
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(new LatLng(markers.latitude, markers.longitude));
@@ -322,6 +342,7 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback, 
 
     // Location Tracking methods
     void trackLocationOfGroup(List<ParseObject> userGroupList) {
+
         for (ParseObject parseObject : userGroupList) {
             UserGroup userGroup = (UserGroup) parseObject;
             LocationTrackerAPI locationTrackerAPI = new LocationTrackerAPI(this);
