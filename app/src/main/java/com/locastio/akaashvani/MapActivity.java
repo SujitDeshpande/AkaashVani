@@ -2,7 +2,7 @@ package com.locastio.akaashvani;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapActivity extends FragmentActivity implements LocationAPI.Callback, GPSTracker.Callback, UserGroupAPI.Callback, LocationTrackerAPI.Callback {
+public class MapActivity extends BaseActivity implements LocationAPI.Callback, GPSTracker.Callback, UserGroupAPI.Callback, LocationTrackerAPI.Callback {
 
     private static final String TAG = "LocationActivity";
     private static final long INTERVAL = 1000 * 60 * 1; //1 minute
@@ -72,6 +72,9 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
 
         setUpMapIfNeeded();
 
