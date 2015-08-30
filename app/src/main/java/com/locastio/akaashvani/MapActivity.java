@@ -27,6 +27,7 @@ import com.parse.ParseUser;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class MapActivity extends FragmentActivity implements LocationAPI.Callback, GPSTracker.Callback, UserGroupAPI.Callback, LocationTrackerAPI.Callback {
@@ -39,6 +40,8 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
     private String mLastUpdateTime;
     private GoogleMap mMap;
     private android.location.LocationListener locationListener;
+
+    HashMap<String, MarkerOptions> hashMapMarkerOptions = new HashMap<>();
 
     List<Markers> markers = new ArrayList<Markers>();
 
@@ -131,7 +134,9 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker"));
+//        mMap.addMarker(new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker"));
+//        MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker");
+//        markerOptions.position(new LatLng(1,1));
     }
 
     //    protected void createLocationRequest() {
@@ -332,6 +337,21 @@ public class MapActivity extends FragmentActivity implements LocationAPI.Callbac
         }
 
         if (latitude != 0 && longitude != 0) {
+
+            MarkerOptions markerOptions = hashMapMarkerOptions.get(parseUser.getObjectId());
+            if (markerOptions == null) {
+                String fullname = (String)parseUser.get("fullname");
+                markerOptions = new MarkerOptions().position(new LatLng(latitude, longitude)).title(fullname);
+                mMap.addMarker(markerOptions);
+            } else {
+                markerOptions.position(new LatLng(latitude, longitude));
+            }
+
+
+//            mMap.addMarker(new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker"));
+//            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(12.78, 77.87)).title("Marker");
+//            markerOptions.position(new LatLng(1,1));
+
             Toast.makeText(this, "User " + parseUser.get("fullname") + ":" + latitude + ":" + longitude, Toast.LENGTH_SHORT).show();
         }
 
