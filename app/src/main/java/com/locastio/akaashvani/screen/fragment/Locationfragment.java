@@ -356,7 +356,7 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback, 
     void stopTrackingGroup() {
         for (LocationTrackerAPI locationTrackerAPI : locationTrackerAPIList) {
             locationTrackerAPI.removeTrackingForUser();
-            locationTrackerAPIList.add(locationTrackerAPI);
+            //locationTrackerAPIList.add(locationTrackerAPI);
         }
     }
 

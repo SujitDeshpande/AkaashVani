@@ -27,7 +27,7 @@ public class Splashactivity extends BaseActivity {
                 if (user != null) {
                     intent = new Intent(Splashactivity.this, DashboardActivity.class);
                 } else {
-                    intent = new Intent(Splashactivity.this, LoginActivity.class);
+                    intent = new Intent(Splashactivity.this, SMSLoginActivity.class);
                 }
 
 //                String authToken = PreferenceUtil.getInstance().getStringValue(PreferenceKey.KEY_AUTH_TOKEN, "");

@@ -7,7 +7,7 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp"
+
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardCornerRadius="36dp">
 
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:text="Number of memebers"
+            android:text="Members"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </android.support.v7.widget.CardView>

@@ -35,10 +35,10 @@
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/create_grp_fab"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_gravity="bottom|end"
-                android:src="@drawable/ic_create_grp_add_circle"
-                app:elevation="6dp"
+                android:src="@drawable/new_group"
+                app:backgroundTint="@color/tw__blue_default"
                 app:pressedTranslationZ="12dp" />
 
         </FrameLayout>
