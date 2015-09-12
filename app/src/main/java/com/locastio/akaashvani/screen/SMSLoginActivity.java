@@ -43,7 +43,7 @@ public class SMSLoginActivity extends BaseActivity implements UserAPI.Callback {
                 Toast.makeText(SMSLoginActivity.this,
                         "Authentication Successful for " + phoneNumber, Toast.LENGTH_SHORT).show();
                 showProgressDialog(SMSLoginActivity.this, "Logging In");
-                phoneNumber = phoneNumber.substring(3, phoneNumber.length());
+                //phoneNumber = phoneNumber.substring(3, phoneNumber.length());
                 userAPI.login(phoneNumber , "1234");
             }
 
