@@ -6,11 +6,13 @@ import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,8 +25,10 @@ import com.locastio.akaashvani.AkaashvaniApplication;
 import com.locastio.akaashvani.R;
 import com.locastio.akaashvani.chat.Chat;
 import com.locastio.akaashvani.chat.ChatListAdapter;
+import com.locastio.akaashvani.data.Conversation;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -36,6 +40,9 @@ import java.util.Random;
  * create an instance of this fragment.
  */
 public class ChatFragment extends Fragment {
+
+    private ArrayList<Conversation> convList;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -105,6 +112,8 @@ public class ChatFragment extends Fragment {
 
         // Setup our input methods. Enter key on the keyboard or pushing the send button
         inputText = (EditText) view.findViewById(R.id.messageInput);
+        inputText.setInputType(InputType.TYPE_CLASS_TEXT
+                | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         inputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -122,12 +131,24 @@ public class ChatFragment extends Fragment {
             }
         });
 
+        convList = new ArrayList<Conversation>();
+
+      /*  ChatAdapter adp = new ChatAdapter();
+        mListView.setAdapter(adp);*/
         mListView = (ListView)view.findViewById(android.R.id.list);
+        mListView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+        mListView.setStackFromBottom(true);
 //        final ListView listView = (ListView)getActivity().getview.getListView();
 
         // Inflate the layout for this fragment
         return view;
     }
+
+    /**
+     * The Class ChatAdapter is the adapter class for Chat ListView. This
+     * adapter shows the Sent or Receieved Chat message in each list item.
+     */
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -167,6 +188,8 @@ public class ChatFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+
+
 
     @Override
     public void onStart() {

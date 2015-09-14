@@ -4,27 +4,35 @@ import android.app.ListActivity;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.format.DateUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.locastio.akaashvani.R;
+import com.locastio.akaashvani.data.Conversation;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
  * Created by ketan on 30/08/15.
  */
 public class ChatActivity  extends ListActivity {
+
+    private ArrayList<Conversation> convList;
+    private ChatAdapter adp;
 
     // TODO: change this to your own Firebase URL
 //    private static final String FIREBASE_URL = "https://android-chat.firebaseio-demo.com";
@@ -49,12 +57,21 @@ public class ChatActivity  extends ListActivity {
 
         setTitle("Chatting as " + mUsername);
 
+/*        convList = new ArrayList<Conversation>();
+        ListView list = (ListView) findViewById(R.id.list);
+        adp = new ChatAdapter();
+        list.setAdapter(adp);
+        list.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+        list.setStackFromBottom(true);*/
+
         // Setup our Firebase mFirebaseRef
 //        mFirebaseRef = new Firebase(FIREBASE_URL).child("chat");
         mFirebaseRef = mFirebaseRefChatLocation.child(strGroupObjId);
 
         // Setup our input methods. Enter key on the keyboard or pushing the send button
         EditText inputText = (EditText) findViewById(R.id.messageInput);
+        inputText.setInputType(InputType.TYPE_CLASS_TEXT
+                | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         inputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -71,6 +88,78 @@ public class ChatActivity  extends ListActivity {
                 sendMessage();
             }
         });
+
+    }
+
+    /**
+     * The Class ChatAdapter is the adapter class for Chat ListView. This
+     * adapter shows the Sent or Receieved Chat message in each list item.
+     */
+    private class ChatAdapter extends BaseAdapter
+    {
+
+        /* (non-Javadoc)
+         * @see android.widget.Adapter#getCount()
+         */
+        @Override
+        public int getCount()
+        {
+            return convList.size();
+        }
+
+        /* (non-Javadoc)
+         * @see android.widget.Adapter#getItem(int)
+         */
+        @Override
+        public Conversation getItem(int arg0)
+        {
+            return convList.get(arg0);
+        }
+
+        /* (non-Javadoc)
+         * @see android.widget.Adapter#getItemId(int)
+         */
+        @Override
+        public long getItemId(int arg0)
+        {
+            return arg0;
+        }
+
+        /* (non-Javadoc)
+         * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
+         */
+        @Override
+        public View getView(int pos, View v, ViewGroup arg2)
+        {
+            Conversation c = getItem(pos);
+            if (c.isSent())
+                v = getLayoutInflater().inflate(R.layout.chat_item_sent, null);
+            else
+                v = getLayoutInflater().inflate(R.layout.chat_item_rcv, null);
+
+            TextView lbl = (TextView) v.findViewById(R.id.lbl1);
+            lbl.setText(DateUtils.getRelativeDateTimeString(ChatActivity.this, c
+                            .getDate().getTime(), DateUtils.SECOND_IN_MILLIS,
+                    DateUtils.DAY_IN_MILLIS, 0));
+
+            lbl = (TextView) v.findViewById(R.id.lbl2);
+            lbl.setText(c.getMsg());
+
+            lbl = (TextView) v.findViewById(R.id.lbl3);
+            if (c.isSent())
+            {
+                if (c.getStatus() == Conversation.STATUS_SENT)
+                    lbl.setText("Delivered");
+                else if (c.getStatus() == Conversation.STATUS_SENDING)
+                    lbl.setText("Sending...");
+                else
+                    lbl.setText("Failed");
+            }
+            else
+                lbl.setText("");
+
+            return v;
+        }
 
     }
 
