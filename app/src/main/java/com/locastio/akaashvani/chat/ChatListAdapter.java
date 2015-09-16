@@ -11,7 +11,7 @@ import com.locastio.akaashvani.R;
 /**
  * @author ketan
  * @since 6/21/13
- *
+ * <p/>
  * This class is an example of how to use FirebaseListAdapter. It uses the <code>Chat</code> class to encapsulate the
  * data for each individual chat message
  */
@@ -19,10 +19,12 @@ public class ChatListAdapter extends FirebaseListAdapter<Chat> {
 
     // The mUsername for this client. We use this to indicate which messages originated from this user
     private String mUsername;
+    private Activity mActivity;
 
     public ChatListAdapter(Query ref, Activity activity, int layout, String mUsername) {
         super(ref, Chat.class, layout, activity);
         this.mUsername = mUsername;
+        this.mActivity = activity;
     }
 
     /**
@@ -37,14 +39,21 @@ public class ChatListAdapter extends FirebaseListAdapter<Chat> {
     protected void populateView(View view, Chat chat) {
         // Map a Chat object to an entry in our listview
         String author = chat.getAuthor();
+
         TextView authorText = (TextView) view.findViewById(R.id.author);
+        TextView message = (TextView) view.findViewById(R.id.message);
+
         authorText.setText(author + ": ");
         // If the message was sent by this user, color it differently
         if (author != null && author.equals(mUsername)) {
             authorText.setTextColor(Color.RED);
+            message.setBackground(mActivity.getResources().getDrawable(R.drawable.bubble_a));
+
         } else {
             authorText.setTextColor(Color.BLUE);
+            message.setBackground(mActivity.getResources().getDrawable(R.drawable.bubble_b));
+
         }
-        ((TextView) view.findViewById(R.id.message)).setText(chat.getMessage());
+        message.setText(chat.getMessage());
     }
 }

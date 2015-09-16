@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="4"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_akv"
+        android:src="@mipmap/ic_launcher"
         android:tint="@color/tw__blue_default" />
 
 
@@ -32,7 +32,7 @@
             android:id="@+id/phone_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/sign_up_button"
+            android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"

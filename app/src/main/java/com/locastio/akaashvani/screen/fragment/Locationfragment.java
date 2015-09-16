@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.google.android.gms.common.ConnectionResult;
@@ -251,10 +250,10 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback, 
     }
 
     private void addMarkers() {
-        Toast.makeText(getActivity(), "Add Markers", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "Add Markers", Toast.LENGTH_SHORT).show();
         mMap.clear();
         for (Map.Entry entry : hashMapMarkerOptions.entrySet()) {
-            Toast.makeText(getActivity(), "Inside For Loop", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "Inside For Loop", Toast.LENGTH_SHORT).show();
             Markers markers = (Markers) entry.getValue();
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(new LatLng(markers.latitude, markers.longitude));

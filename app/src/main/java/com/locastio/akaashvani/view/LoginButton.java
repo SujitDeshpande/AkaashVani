@@ -34,10 +34,10 @@ public class LoginButton extends DigitsAuthButton {
         if (isInEditMode()){
             return;
         }
-        final Drawable phone = getResources().getDrawable(R.drawable.ic_signin_phone);
+        final Drawable phone = getResources().getDrawable(R.drawable.dgts__ic_success);
         phone.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
         setCompoundDrawablesWithIntrinsicBounds(phone, null, null, null);
-        setBackgroundResource(R.drawable.digits_button);
+        setBackgroundResource(R.drawable.dgts__digits_btn);
         setText("Sign In/ Register");
         setTextSize(16);
         setTextColor(getResources().getColor(R.color.white));
