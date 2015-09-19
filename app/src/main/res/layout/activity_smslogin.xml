@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="4"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/logo"
         android:tint="@color/tw__blue_default" />
 
 

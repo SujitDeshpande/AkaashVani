@@ -1,6 +1,7 @@
 package com.locastio.akaashvani.screen;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ public class SMSLoginActivity extends BaseActivity implements UserAPI.Callback {
         setContentView(R.layout.activity_smslogin);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         final LoginButton digitsButton = (LoginButton) findViewById(R.id.phone_button);
+        digitsButton.setBackgroundColor(Color.BLUE);
 
         digitsButton.setCallback(new AuthCallback() {
             @Override
