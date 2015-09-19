@@ -18,12 +18,12 @@
 
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/MyCustomTabText</item>
-        <item name="tabSelectedTextColor">@color/orange_color</item>
+        <item name="tabSelectedTextColor">@color/application_background</item>
     </style>
 
     <style name="MyCustomTabText" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/application_background</item>
+        <item name="android:textColor">@color/text_hint_color</item>
     </style>
     <style name="edittext_msg" parent="android:Widget.Holo.Light.EditText">
         <item name="android:background">@drawable/edittext_bg</item>

@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.firebase.client.Query;
 import com.locastio.akaashvani.R;
 
-import java.util.Date;
-
 /**
  * @author ketan
  * @since 6/21/13
@@ -35,7 +33,6 @@ public class ChatListAdapter extends FirebaseListAdapter<Chat> {
     @Override
     public View getView(int pos, View v, ViewGroup viewGroup) {
         Chat c = (Chat) getItem(pos);
-        Date currentTime = new Date();
 
         LayoutInflater li = (LayoutInflater) viewGroup.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (c.getAuthor().equals(mUsername))

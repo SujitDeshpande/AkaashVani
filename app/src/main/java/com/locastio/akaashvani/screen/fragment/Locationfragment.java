@@ -45,7 +45,10 @@ import java.util.Map;
  * Use the {@link Locationfragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Locationfragment extends Fragment implements LocationAPI.Callback, GPSTracker.Callback, UserGroupAPI.Callback, LocationTrackerAPI.Callback {
+public class Locationfragment extends Fragment implements LocationAPI.Callback,
+        GPSTracker.Callback,
+        UserGroupAPI.Callback,
+        LocationTrackerAPI.Callback {
 
 
     private static final String TAG = "LocationActivity";
