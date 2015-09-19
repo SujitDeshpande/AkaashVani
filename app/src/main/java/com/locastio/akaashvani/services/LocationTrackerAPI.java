@@ -1,7 +1,5 @@
 package com.locastio.akaashvani.services;
 
-import android.location.Location;
-
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -13,7 +11,7 @@ import com.parse.ParseUser;
  */
 public class LocationTrackerAPI {
     private Firebase mFirebaseRefLocation;
-    private static final String FIREBASE_URL = "https://akaashvani.firebaseio.com/";
+    private static final String FIREBASE_URL = "https://akaashvaani.firebaseio.com/";
 
     public LocationTrackerAPI(Callback callback) {
         this.callback = callback;

@@ -51,7 +51,7 @@ public class ChatFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
 
-    private static final String FIREBASE_URL = "https://akaashvani.firebaseio.com/";
+    private static final String FIREBASE_URL = "https://akaashvaani.firebaseio.com/";
     private Firebase mFirebaseRefChatLocation;
 
     private String mUsername;
@@ -197,7 +197,7 @@ public class ChatFragment extends Fragment {
         // Setup our view and list adapter. Ensure it scrolls to the bottom as data changes
 
         // Tell our list adapter that we only want 50 messages at a time
-        mChatListAdapter = new ChatListAdapter(mFirebaseRef.limit(50), getActivity(), R.layout.chat_message, mUsername);
+        mChatListAdapter = new ChatListAdapter(mFirebaseRef.limit(50), getActivity(), R.layout.chat_item_rcv, mUsername);
         mListView.setAdapter(mChatListAdapter);
         mChatListAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override

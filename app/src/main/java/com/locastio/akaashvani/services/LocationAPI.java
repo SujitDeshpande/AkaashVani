@@ -14,7 +14,7 @@ import com.parse.ParseUser;
 public class LocationAPI {
 
     private Firebase mFirebaseRefLocation;
-    private static final String FIREBASE_URL = "https://akaashvani.firebaseio.com/";
+    private static final String FIREBASE_URL = "https://akaashvaani.firebaseio.com/";
 
     public LocationAPI(Callback callback) {
         this.callback = callback;

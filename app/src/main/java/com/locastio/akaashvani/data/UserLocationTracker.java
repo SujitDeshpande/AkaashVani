@@ -15,7 +15,7 @@ public class UserLocationTracker {
 
     private Firebase mUserFirebaseRefLocation;
     private ParseUser parseUser;
-    private static final String FIREBASE_URL = "https://akaashvani.firebaseio.com/";
+    private static final String FIREBASE_URL = "https://akaashvaani.firebaseio.com/";
     public UserLocationTracker(Callback callback, ParseUser parseUser) {
         this.callback = callback;
         this.parseUser = parseUser;

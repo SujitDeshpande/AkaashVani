@@ -1,22 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/llaa"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" 
-    >
+    android:orientation="horizontal">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/chatListItemImage"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_margin="1dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/user_chat1"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/llaa"
+        android:layout_marginLeft="45dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
             android:id="@+id/v1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/pad_10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/chat_bubble_gray"
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:paddingBottom="@dimen/pad_5dp"
             android:paddingLeft="@dimen/pad_chat_item"
-            android:paddingTop="@dimen/pad_5dp" >
+            android:paddingTop="@dimen/pad_5dp">
 
             <TextView
                 android:id="@+id/lbl1"
@@ -25,14 +43,15 @@
                 android:text="TextView"
                 android:textColor="@color/main_color_gray_dk"
                 android:textSize="@dimen/txt_13sp" />
+
             <TextView
                 android:id="@+id/lbl2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="4"
                 android:text="text"
                 android:textColor="@color/main_color_gray_dk"
-                android:textSize="@dimen/txt_14sp" 
-                android:maxLines="4"/>
+                android:textSize="@dimen/txt_14sp" />
 
         </LinearLayout>
 
@@ -40,12 +59,12 @@
             android:id="@+id/lbl3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="text"
-            android:textColor="@color/main_color_gray"
-            android:textSize="@dimen/txt_14sp"
             android:layout_alignRight="@+id/v1"
             android:layout_below="@+id/v1"
-            android:layout_marginTop="@dimen/pad_5dp"
             android:layout_marginLeft="@dimen/pad_20dp"
-            />
-</LinearLayout>
+            android:layout_marginTop="@dimen/pad_5dp"
+            android:text="text"
+            android:textColor="@color/main_color_gray"
+            android:textSize="@dimen/txt_14sp" />
+    </LinearLayout>
+</RelativeLayout>
