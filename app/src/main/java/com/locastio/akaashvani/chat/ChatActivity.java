@@ -20,6 +20,7 @@ import com.locastio.akaashvani.R;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -144,7 +145,7 @@ public class ChatActivity extends ListActivity {
         String input = inputText.getText().toString();
         if (!input.equals("")) {
             // Create our 'model', a Chat object
-            Chat chat = new Chat(input, mUsername);
+            Chat chat = new Chat(input, mUsername, new Date().getTime());
             // Create a new, auto-generated child of that chat location, and save our chat data there
             mFirebaseRef.push().setValue(chat);
             inputText.setText("");
