@@ -3,6 +3,7 @@ package com.locastio.akaashvani.screen;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -27,11 +28,12 @@ public class SMSLoginActivity extends BaseActivity implements UserAPI.Callback {
 
     private static final String TWITTER_KEY = "CKEihbEh3LgzDuaQov81oIKP7";
     private static final String TWITTER_SECRET = "emKomVQZTmzTRMBaG0axVoK7JRYhIMB5wpz4HxhT9Li4xAlM48";
+    final UserAPI userAPI = new UserAPI((Callback) this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        final UserAPI userAPI = new UserAPI((Callback) this);
+
         Fabric.with(this, new TwitterCore(authConfig), new Digits());
         setContentView(R.layout.activity_smslogin);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -46,7 +48,8 @@ public class SMSLoginActivity extends BaseActivity implements UserAPI.Callback {
                         "Authentication Successful for " + phoneNumber, Toast.LENGTH_SHORT).show();
                 showProgressDialog(SMSLoginActivity.this, "Logging In");
                 //phoneNumber = phoneNumber.substring(3, phoneNumber.length());
-                userAPI.login(phoneNumber , "1234");
+                userAPI.getUser(phoneNumber);
+                //userAPI.login(phoneNumber , "1234");
             }
 
             @Override
@@ -82,7 +85,13 @@ public class SMSLoginActivity extends BaseActivity implements UserAPI.Callback {
 
     @Override
     public void didRegister(ParseUser user) {
+        dismissProgressDialog();
+        if (user != null) {
 
+            Intent intent = new Intent(SMSLoginActivity.this, DashboardActivity.class);
+            startActivity(intent);
+            //finish();
+        }
     }
 
     @Override
@@ -98,11 +107,13 @@ public class SMSLoginActivity extends BaseActivity implements UserAPI.Callback {
 
     @Override
     public void didRetriveUser(ParseUser user) {
-
+        Log.i("Inside didRetrieve User", "didRetriveUser ");
+        userAPI.login(user.getUsername(), "1234");
     }
 
     @Override
     public void didFailed() {
+        //userAPI.registerUser(user.toString(), "1234", "Maneesh");
         dismissProgressDialog();
         Toast.makeText(SMSLoginActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
     }
@@ -110,5 +121,11 @@ public class SMSLoginActivity extends BaseActivity implements UserAPI.Callback {
     @Override
     public void didFailed(String str) {
 
+    }
+
+    @Override
+    public void didLoginFailed(String phone) {
+        //dismissProgressDialog();
+        userAPI.registerUser(phone, "1234", "NewUser");
     }
 }

@@ -45,7 +45,8 @@ import java.util.Map;
  * Use the {@link Locationfragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Locationfragment extends Fragment implements LocationAPI.Callback,
+public class Locationfragment extends Fragment implements
+        LocationAPI.Callback,
         GPSTracker.Callback,
         UserGroupAPI.Callback,
         LocationTrackerAPI.Callback {
@@ -127,11 +128,9 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback,
         if (!isGooglePlayServicesAvailable()) {
             getActivity().finish();
         }
-//
-        gpsTracker.getLocation();
 
-        setUpMapIfNeeded();
         startLocationUpdates();
+        setUpMapIfNeeded();
 
         // Inflate the layout for this fragment
         return view;
@@ -140,15 +139,12 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback,
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         stopLocationUpdates();
-        stopTrackingGroup();
     }
 
     /**
@@ -166,55 +162,29 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback,
         public void onFragmentInteraction(Uri uri);
     }
 
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #} once when {@link #} is not null.
-     * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            mMap.getUiSettings().setZoomControlsEnabled(true);
-            mMap.setMyLocationEnabled(true);
-            mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-                @Override
-                public boolean onMyLocationButtonClick() {
-                    gpsTracker.getLocation();
-                    addMarkers();
-                    return true;
-                }
-            });
-            addMarker();
+        // Try to obtain the map from the SupportMapFragment.
+        mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map))
+                .getMap();
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.setMyLocationEnabled(true);
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                mCurrentLocation = gpsTracker.getLocation();
+                addMarkers();
+                return true;
+            }
+        });
+        addMarker();
     }
 
     private void addMarker() {
         MarkerOptions options = new MarkerOptions();
 
-        // following four lines requires 'Google Maps Android API Utility Library'
-        // https://developers.google.com/maps/documentation/android/utility/
-        // I have used this to display the time as title for location markers
-        // you can safely comment the following four lines but for this info
-        /*IconGenerator iconFactory = new IconGenerator(this);
-        iconFactory.setStyle(IconGenerator.STYLE_PURPLE);
-        options.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(mLastUpdateTime)));
-        options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());*/
-
         LatLng currentLatLng = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
         options.position(currentLatLng);
-
-        //mMarker = googleMap.addMarker(options);
         Log.d(TAG, "Marker added.............................");
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,
                 17));
@@ -226,15 +196,14 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback,
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart fired ..............");
-        //mGoogleApiClient.connect();
+        startLocationUpdates();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        stopLocationUpdates();
         Log.d(TAG, "onStop fired ..............");
-        //mGoogleApiClient.disconnect();
-        Log.d(TAG, "isConnected ...............: ");
     }
 
     private boolean isGooglePlayServicesAvailable() {
@@ -253,10 +222,8 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback,
     }
 
     private void addMarkers() {
-//        Toast.makeText(getActivity(), "Add Markers", Toast.LENGTH_SHORT).show();
         mMap.clear();
         for (Map.Entry entry : hashMapMarkerOptions.entrySet()) {
-//            Toast.makeText(getActivity(), "Inside For Loop", Toast.LENGTH_SHORT).show();
             Markers markers = (Markers) entry.getValue();
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(new LatLng(markers.latitude, markers.longitude));
@@ -268,13 +235,11 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback,
     @Override
     public void onPause() {
         super.onPause();
-        stopLocationUpdates();
+
     }
 
     protected void stopLocationUpdates() {
-/*        LocationServices.FusedLocationApi.removeLocationUpdates(
-                mGoogleApiClient, this);*/
-
+        gpsTracker.stopUsingGPS();
         Log.d(TAG, "Location update stopped .......................");
     }
 
@@ -298,7 +263,6 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback,
         Log.d(TAG, "Firing onLocationChanged..............................................");
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-
 
 
     }
@@ -405,8 +369,6 @@ public class Locationfragment extends Fragment implements LocationAPI.Callback,
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 14));
                 isAnimated = true;
             }
-
-//            Toast.makeText(this, "User " + parseUser.get("fullname") + ":" + latitude + ":" + longitude, Toast.LENGTH_SHORT).show();
         }
 
     }

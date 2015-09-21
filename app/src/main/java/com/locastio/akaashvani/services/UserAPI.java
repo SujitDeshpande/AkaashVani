@@ -22,6 +22,7 @@ public class UserAPI {
         void didRetriveUser(ParseUser user);
         void didFailed();
         void didFailed(String str);
+        void didLoginFailed (String phone);
     }
 
     Callback callback;
@@ -41,6 +42,7 @@ public class UserAPI {
 
 // other fields can be set just like with ParseObject
 //        user.put("phone", phone);//"650-253-0000");
+        Log.i("registerUser", "User: "+phone);
 
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
@@ -62,23 +64,25 @@ public class UserAPI {
         });
     }
 
-    public void getUser(String phone) {
+    public void getUser(final String phone) {
         ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseUser> query = ParseUser.getQuery();
 //        ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
         query.whereEqualTo("username", phone);
-//        ParseUser *user = (ParseUser)query.getFirst();
+        Log.i("Inside Get User", "getUser ");
 
         query.getFirstInBackground(new GetCallback<ParseUser>() {
             @Override
             public void done(ParseUser parseUser, ParseException e) {
                 if (e == null) {
+                    Log.i("getFirstInBackground", "e==null ");
                     if (callback != null) {
                         callback.didRetriveUser(parseUser);
                     }
                 } else {
+                    Log.i("getFirstInBackground", "else ");
                     if (callback != null) {
-                        callback.didFailed("User not found.");
+                        callback.didLoginFailed(phone);
                     }
                 }
             }
@@ -93,9 +97,11 @@ public class UserAPI {
     }
 
     public void login(String phone, String password) {
+        Log.i("Inside Login", "login ");
         ParseUser.logInInBackground(phone, password, new LogInCallback() {
             public void done(ParseUser parseUser, ParseException e) {
                 ParseUser user = parseUser;
+                Log.i("Parse User", "Parse User "+ user.getUsername());
                 if (user != null) {
                     // Hooray! The user is logged in.
                     if (callback != null) {

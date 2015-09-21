@@ -144,13 +144,13 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
     private boolean localValidation() {
 
         if (!TextUtils.isEmpty(mPhoneNumberEditText.getText().toString())
-                && (mPhoneNumberEditText.getText().toString().length() == 10)
+                && (mPhoneNumberEditText.getText().toString().length() == 13)
                 && (!TextUtils.isEmpty(mGroupNameEditText.getText().toString()))) {
             mPhoneNumberEditText.setError(null);
             mGroupNameEditText.setError(null);
             return true;
-        } else if (mPhoneNumberEditText.getText().toString().length() < 10) {
-            mPhoneNumberEditText.setError("Please enter 10 digit mobile number.");
+        } else if (mPhoneNumberEditText.getText().toString().length() < 13) {
+            mPhoneNumberEditText.setError("Please enter 10 digit mobile number along with the Country Code e.g. +91<mobile no>");
             return false;
         } else if (TextUtils.isEmpty(mGroupNameEditText.getText().toString())) {
             mGroupNameEditText.setError("Please enter group name.");
@@ -210,4 +210,8 @@ public class CreateGroupActivity extends BaseActivity implements View.OnClickLis
         Toast.makeText(CreateGroupActivity.this, str, Toast.LENGTH_SHORT).show(); // user not found
     }
 
+    @Override
+    public void didLoginFailed(String phone) {
+
+    }
 }

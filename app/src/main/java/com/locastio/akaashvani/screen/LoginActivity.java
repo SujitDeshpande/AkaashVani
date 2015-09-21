@@ -122,4 +122,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void didFailed(String str) {
 
     }
+
+    @Override
+    public void didLoginFailed(String phone) {
+
+    }
 }
