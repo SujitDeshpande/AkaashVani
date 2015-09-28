@@ -2,8 +2,8 @@
     <string name="app_name">AkaashVani</string>
     <string name="title_activity_main">AkaashVani</string>
 
-    <string name="parse_app_id">cDaiACXWaJtOkXdkUkLPQ8MSZ664oNIUAxe8HKi2</string>
-    <string name="parse_client_key">UDITep9Xx7MYm0fF5ZdKICW8kCTeoiPX900aD3fE</string>
+    <string name="parse_app_id">cDaiACXWaJtOkXdkUkLPQ8MSZ664oNIUAxdei8lHaKvin2i</string>
+    <string name="parse_client_key">UDITep9Xx7MYm0fF5ZdKICW8kCTeoiPX90d0ialDa3vfnEi</string>
     <string name="facebook_app_id">476063855909115</string>
     <string name="twitter_consumer_key">YOUR_TWITTER_CONSUMER_KEY</string>
     <string name="twitter_consumer_secret">YOUR_TWITTER_CONSUMER_SECRET</string>
@@ -25,7 +25,7 @@
     <string name="title_activity_create_group">CreateGroupActivity</string>
     <string name="network_issue">Please check your network connection.</string>
     <!--<string name="google_maps_key">AIzaSyDYPEmn_im45MaiAewIOXruCRU4_IFUCjQ</string>  ankur -->
-    <string name="google_maps_key">AIzaSyD3iDbfuLunFVV2w7Mo2EhjnrJ7rFCGNrA</string>
+    <string name="google_maps_key">AIzaSyD3iDbfuLunFVV2w7Mo2EhjnrJ7rdFiClGaNvrnAi</string>
     <string name="title_activity_tab_location_chat">TabLocationChat</string>
     <string name="title_activity_smslogin">Sign In</string> <!--sujitapi key  -->
 
