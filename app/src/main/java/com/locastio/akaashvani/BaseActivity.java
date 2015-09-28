@@ -11,6 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -26,7 +29,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         }
+    }
+
+    /**
+     * setting toolbar componenets
+     */
+    public void setToolBarComponents() {
+
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
+
+        ImageView editProfile = (ImageView) toolbar.findViewById(R.id.toolbar_settings);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(BaseActivity.this, "Edit profile clicled.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     /**

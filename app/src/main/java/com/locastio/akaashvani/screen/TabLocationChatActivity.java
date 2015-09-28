@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
 
 import com.locastio.akaashvani.BaseActivity;
 import com.locastio.akaashvani.R;
@@ -20,10 +18,12 @@ public class TabLocationChatActivity extends BaseActivity implements Locationfra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_location_chat);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        TextView toolbarTextView = (TextView) toolbar.findViewById(R.id.toolbar_heading);
-        toolbarTextView.setText(getIntent().getStringExtra("groupName"));
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+//        TextView toolbarTextView = (TextView) toolbar.findViewById(R.id.toolbar_heading);
+//        toolbarTextView.setText(getIntent().getStringExtra("groupName"));
+//        setSupportActionBar(toolbar);
+
+        setToolBarComponents();
 
         String strGroupObjId = getIntent().getStringExtra("groupObjId");
 

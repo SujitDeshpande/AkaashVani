@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -39,8 +39,10 @@ public class DashboardActivity extends BaseActivity implements UserGroupAPI.Call
 
         System.out.println("on ************8  cretae ");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
+
+        setToolBarComponents();
 
         getUsersGroupApi();
 
@@ -90,10 +92,14 @@ public class DashboardActivity extends BaseActivity implements UserGroupAPI.Call
             for (ParseObject userGroupObj : userGroupList) {
                 UserGroup userGroup = (UserGroup) userGroupObj;
                 Group group = userGroup.getGroup();
-
-                mGroupsArrayList.add(group);
+                if (group != null) {
+                    if (!TextUtils.isEmpty(group.getName())) {
+                        mGroupsArrayList.add(group);
+                    }
+                }
             }
 
+            System.out.println("Grp array :" + mGroupsArrayList.size());
             mGrpAdapter = new GroupRecycleViewAdapter(DashboardActivity.this, mGroupsArrayList);
             mGrpRecyclerView.setAdapter(mGrpAdapter);
         } else {

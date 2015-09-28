@@ -35,20 +35,25 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
     public void onBindViewHolder(GroupNameViewHolder holder, int position) {
         final Group currentGrp = data.get(position);
 
-        if (!TextUtils.isEmpty(currentGrp.getName())) {
-            holder.mGrpNameTextView.setText(currentGrp.getName());
-        }
-
-        holder.mGrpNameTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, TabLocationChatActivity.class);
-                intent.putExtra("groupObjId", currentGrp.getObjectId());
-                intent.putExtra("groupName", currentGrp.getName());
-
-                mContext.startActivity(intent);
+        if (currentGrp != null) {
+            if (!TextUtils.isEmpty(currentGrp.getName())) {
+                holder.mGrpNameTextView.setText(currentGrp.getName());
             }
-        });
+
+            System.out.println("Grp Name :"+currentGrp.getName());
+            System.out.println("Grp Id :" + currentGrp.getObjectId());
+
+            holder.mGrpNameTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, TabLocationChatActivity.class);
+                    intent.putExtra("groupObjId", currentGrp.getObjectId());
+                    intent.putExtra("groupName", currentGrp.getName());
+
+                    mContext.startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override
